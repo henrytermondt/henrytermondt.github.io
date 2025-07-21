@@ -27,7 +27,6 @@ description: >- # this means to ignore newlines until "baseurl:"
 github_username:  henrytermondt
 domain: henrytermondt.github.io
 url: https://henrytermondt.github.io
-baseurl: /henrytermondt.github.io/
 
 
 # Build settings
