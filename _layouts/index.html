@@ -1,0 +1,114 @@
+---
+layout: default
+---
+<style>
+    .grid {
+        /* background-color: red; */
+
+        display: grid;
+        grid-template-columns: repeat(3, 200px);
+        /* width: 600px; */
+        row-gap: 50px;
+        /* gap: 10px; */
+        /* flex-direction: row; */
+        align-content: space-between;
+        justify-content: space-between;
+    }
+
+    .card {
+        width: 250px;
+        height: 312.5px;
+
+        border-style: solid;
+        border-width: 1px;
+        border-color: rgb(200, 200, 200);
+        border-radius: 15px;
+
+        background-color: white;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+
+        transition: transform 0.1s ease-out;
+    }
+    .card:hover {
+        cursor: pointer;
+        transform: scale(1.05);
+    }
+    .thumb {
+        background-image: linear-gradient(120deg, #155799, #159957);
+
+        flex: 2;
+    }
+    .overlay {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.3);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 10px;
+    }
+    .card-title {
+        color: white;
+        font-size: 1.5em;
+        text-align: center;
+    }
+    .desc {
+        flex: 1;
+        background-color: white;
+
+
+        display: flex;
+        align-items: center;
+    }
+    .desc p {
+        width: 100%;
+        text-align: center;
+        font-size: 0.9em;
+
+        margin: 10px;
+    }
+
+    .section-header {
+        color: #606c71 !important;
+    }
+</style>
+
+<h2 class='section-header'>About</h2>
+<div>
+    <p>I am a student who is passionate about programming, computational mathematics, and computational physics.
+    Feel free to reach out! I'm always happy to answer questions or talk.</p>
+    <p>Contact me at <a href='mailto:henry.termondt@gmail.com'>henry.termondt@gmail.com</a>.</p>
+</div>
+
+
+<h2 class='section-header'>Showcase</h2>
+<div class='grid'>
+    {%- for post in site.posts -%}
+    <div class='card' onclick='javascript: openProject("{{post.href}}");'>
+        <div class='thumb'>
+            <div class='overlay'>
+                <strong class='card-title'>{{ post.title | escape }}</strong>
+            </div>
+        </div>
+        <div class='desc'>
+            <p>{{ post.description | escape }}</p>
+        </div>
+        
+    </div>
+    {%- endfor -%}
+</div>
+
+<script>
+
+const openProject = href => {
+    const page = window.open();
+    page.location.href = href;
+};
+
+</script>

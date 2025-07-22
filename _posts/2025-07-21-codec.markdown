@@ -1,0 +1,6 @@
+---
+layout: post
+title:  "Codec"
+description: "A collection of programming projects to explore"
+href: "https://henrytermondt.github.io/codec/"
+---
