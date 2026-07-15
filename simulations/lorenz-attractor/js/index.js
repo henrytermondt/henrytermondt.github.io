@@ -1,6 +1,6 @@
 const main = async () => {
-    const vertexSource = await (await fetch('./scripts/vertex-shader.glsl')).text(),
-        fragmentSource = await (await fetch('./scripts/fragment-shader.glsl')).text();
+    const vertexSource = await (await fetch('./shaders/vertex-shader.glsl')).text(),
+        fragmentSource = await (await fetch('./shaders/fragment-shader.glsl')).text();
     
     const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexSource),
         fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource),
