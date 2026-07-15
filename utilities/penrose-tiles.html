@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<!-- 
+Penrose Tiles
+6/29/23
+ -->
+<html>
+    <head>
+        <title>Penrose Tilings</title>
+        <style>
+            * {
+                /* overflow: hidden; */
+                margin: 0;
+            }
+
+            div {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                color: red;
+            }
+            canvas {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+        </style>
+    </head>
+    <body>
+        <!-- <div>Hi</div> -->
+        <canvas id = 'canvas'></canvas>
+        <script>
+
+const canvas = document.getElementById('canvas'),
+    ctx = canvas.getContext('2d');
+
+const width = window.innerWidth,
+    height = window.innerHeight;
+
+canvas.width = width * 2;
+canvas.height = height * 2;
+
+ctx.scale(2, 2);
+
+const showInts = false,
+    stroke = !false,
+    fill = true;
+let radius = 30, // 20 for smaller designs
+    symmetries = 7;
+
+const colors = ['#F1F1F1', '#BFBFBF', '#FEFEFE'];
+
+const lerp = (a, b, t) => a + (b - a) * t;
+
+let o = 0;
+class Tile {
+    constructor(verts) {
+        this.verts = verts;
+        this.area = roundToPlace(Tile.getArea(verts), 5);
+
+        this.com = [0, 0]; // Center of mass
+        for (const vert of this.verts) {
+            this.com[0] += vert[0];
+            this.com[1] += vert[1];
+        }
+        this.com /= this.verts.length;
+        this.com /= this.verts.length;
+        
+        if (Tile.types[this.area]) {
+            this.type = Tile.types[this.area];
+        } else {
+            Tile.types[this.area] = {
+                area: this.area,
+                type: Tile.numTypes ++,
+                dist: Infinity,
+                color: null,
+            }
+            this.type = Tile.types[this.area];
+        }
+    }
+    display() {
+        ctx.fillStyle = Tile.types[this.area].color;
+        // let l = (Math.pow(this.area(), 1 / 10)) * 50;
+        // if (l > 1) l = 1;
+        // ctx.fillStyle = `hsl(${l + 150}, 50%, 50%)`;
+        // ctx.fillStyle = `rgb(${lerp(col1[0], col2[0], l)}, ${lerp(col1[1], col2[1], l)}, ${lerp(col1[2], col2[2], l)})`;
+        // colors[(this.area() * 5 | 0) % 5];
+        // colors[(this.verts.length * o * Math.sqrt(2) | 0) % 5 + ];
+        // `hsl(${this.verts.length + o}, 50%, ${Math.sqrt(this.verts.length * 5) * 5}%)`;
+
+        ctx.beginPath();
+        ctx.moveTo(this.verts[0][0], this.verts[0][1]);
+        for (const vert of this.verts) {
+            ctx.lineTo(vert[0], vert[1]);
+        }
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    static setColors() {
+        for (const tile of tiles) {
+            const dist = Math.sqrt(tile.com[0] * tile.com[0] + tile.com[1] * tile.com[1]);
+            if (dist < tile.type.dist) {
+                tile.type.dist = dist;
+            }
+        }
+
+        const distSorted = Object.values(Tile.types).sort(distSort);
+        for (let i = 0; i < distSorted.length; i ++) {
+            const p = i / Tile.numTypes
+            Tile.types[distSorted[i].area].color = colors[i % 3];//`hsl(${-p * 100 + 51}deg, ${100 - p * 83}%, ${75 - p * 45}%)`;
+            // colors[(i + 3) % 4];
+        }
+    }
+    static getArea(verts) {
+        // Adapted from: https://web.archive.org/web/20100405070507/http://valis.cs.uiuc.edu/~sariel/research/CG/compgeom/msg00831.html
+        let area = 0;
+        for (let i = 0; i < verts.length; i ++) {
+            area += verts[i][0] * verts[(i + 1) % verts.length][1] -
+                    verts[i][1] * verts[(i + 1) % verts.length][0];
+        }
+
+        return area;
+    }
+
+    static sideLength = 1;
+    static numTypes = 0;
+    static types = {};
+    static typeDists = [];
+    static colors = [];
+}
+
+const numericSort = (a, b) => a - b;
+const lineAngleSort = (a, b) => a.angle - b.angle;
+const distSort = (a, b) => a.dist - b.dist;
+
+// This isn't actually used anymore, but I think it's still a cool idea to find a unique ID for each grid space
+const getRegion = (x, y) => {
+    /*
+    Takes the dot product of the vector from the center of the pattern
+    to the mouse and the unit vector perpendicular to the line currently
+    looked at. Does that for every line and then rounds it to get the
+    unique ID for each region.
+    */
+    
+    let arr = [];
+    for (let theta = 0; theta < Math.PI; theta += Math.PI / symmetries) {
+        // Originally offset by -width / 2 and -height / 2
+        const dot = (x) * Math.cos(theta - Math.PI / 2) + (y) * Math.sin(theta - Math.PI / 2);
+        arr.push(Math.floor(dot / lineDist + o));
+    }
+
+    return arr;
+};
+
+const unitVecs = [];
+let gamma;
+for (let i = 0; i < symmetries; i ++) unitVecs.push([Math.cos(2 * Math.PI * i / symmetries), Math.sin(2 * Math.PI * i / symmetries)]); // - Math.PI / 2
+
+const calcVert = pos => {
+    let x = 0,
+        y = 0;
+    for (let i = 0; i < symmetries; i ++) {
+        const normal = unitVecs[i];
+        const k = Math.floor(normal[0] * pos[0] + normal[1] * pos[1] - gamma[i]);
+        x += normal[0] * k;
+        y += normal[1] * k;
+    }
+
+    return [x, y];
+};
+
+const roundToPlace = (x, place) => +x.toFixed(place);
+
+const tiles = [];
+let tileEdges = {};
+let lines = [];
+
+
+// Adapted from: https://github.com/aatishb/patterncollider/blob/main/vue-definitions.js
+// let steps = 2 * Math.round((radius / (symmetries - 1) - 1)/2) + 1;
+// let offsets = [];
+// for (let i = 0; i < steps; i ++) offsets[i] = i - (steps - 1) * 0.5;
+// offsets.sort((a,b) => Math.abs(a) - Math.abs(b));
+
+let offsets = [0];
+for (let i = 1; i < radius * symmetries; i ++) offsets.push(-i, i);
+
+// For the grid lines
+const getY = (theta, n, x) => Math.tan(theta + Math.PI / 2) * (x - n * Math.cos(theta)) + n * Math.sin(theta);
+const getX = (theta, n, y) => (y - n * Math.sin(theta)) / Math.tan(theta + Math.PI / 2) + n * Math.cos(theta);
+
+const cols = ['rgb(calc(106 * 1.8), calc(46 * 1.8), calc(53 * 1.8))', 'rgb(46, 40, 54)', 'rgb(117, 109, 84)', 'rgb(200,200,200)', 'rgb(calc(106 * 0.8), calc(46 * 0.8), calc(53 * 0.8))'];
+
+const createLines = () => {
+    // ctx.clearRect(-width / 2, -height / 2, width, height);
+    // ctx.beginPath();
+
+    ctx.fillStyle = '#FEF8F7';
+    ctx.fillRect(-width / 2, -height / 2, width, height);
+
+    const tempLines = {};
+    for (let i = 0; i < symmetries; i ++) {
+        const theta = i * 2 / symmetries * Math.PI + 0.000001,
+            slope = Math.tan(theta + Math.PI / 2);
+        
+        for (const n of offsets) {
+            const x = (n + gamma[i]) * Math.cos(theta),
+                y = (n + gamma[i]) * Math.sin(theta);
+
+            // Draws the pentagrid
+            ctx.strokeStyle = cols[i];
+            ctx.beginPath();
+            // ctx.moveTo(-10, slope * (-10 - x) + y);
+            // ctx.lineTo(10, slope * (10 - x) + y);
+            ctx.stroke();
+            ctx.closePath();
+            
+            tempLines[roundToPlace(x, 5) + ' ' + roundToPlace(y, 5) + ' ' + roundToPlace(slope, 5)] = {
+                x: x,
+                y: y,
+                m: slope,
+                angle: (theta + Math.PI / 2) * 180 / Math.PI % 180,
+            };
+        }
+    }
+
+    lines = Object.values(tempLines);
+    
+    ctx.stroke();
+    ctx.closePath();    
+};
+
+const scale = 20;//100;
+ctx.lineCap = 'round';
+ctx.lineWidth = 0.5/scale;//6 * 1 / scale;
+ctx.translate(width / 2, height / 2);
+ctx.scale(scale, scale);
+
+const calcInts = intPts => {
+    for (const line1 of lines) {
+        for (const line2 of lines) {
+            if (line1.angle >= line2.angle) continue;
+            
+            // Calculates the intersection point of the two lines in point-slope form.
+            // Truncates to five digits of precision due to some errors if not truncated.
+            let x = (line2.m * line2.x - line1.m * line1.x + line1.y - line2.y) / (line2.m - line1.m),
+                y = line1.y + line1.m * (x - line1.x);
+            
+            
+            if (Math.sqrt(x * x + y * y) < 0.5 * (radius - symmetries / 5) && x > -width / (2 * scale) - 2 && x < width / (2 * scale) + 2 && y > -height / (2 * scale) - 2 && y < height / (2 * scale) + 2) {
+                const key = roundToPlace(x, 5) + ' ' + roundToPlace(y, 5); // Stringify the numbers and use them as the key
+                if (intPts[key]) {
+                    intPts[key].lines.add(line1);
+                    intPts[key].lines.add(line2);
+                } else {
+                    const intLines = new Set();
+                    intLines.add(line1);
+                    intLines.add(line2);
+
+                    intPts[key] = {
+                        x: x,
+                        y: y,
+                        lines: intLines,
+                    };
+                }
+            }
+        }
+    }
+};
+const createTiles = intPts => {
+    for (const p in intPts) {
+        const pt = intPts[p],
+            lines = Array.from(pt.lines).sort(lineAngleSort);
+
+        if (showInts) {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(pt.x - 0.0125, pt.y - 0.0125, 0.025, 0.025);
+        }
+
+        const angles = [];
+        for (let i = 0; i < lines.length - 1; i ++) {
+            const av = (lines[i].angle + lines[i + 1].angle) * 0.5;
+            angles.push(av);
+            angles.push((av + 180) % 360);
+        }
+
+        const fillAv = (lines[lines.length - 1].angle + lines[0].angle + 180) * 0.5;
+        angles.push(fillAv, (fillAv + 180) % 360);
+        angles.sort(numericSort);
+
+        const testPts = [];
+        for (const angle of angles) {
+            testPts.push([
+                pt.x + Math.cos(angle * Math.PI / 180) * 0.0001,
+                pt.y + Math.sin(angle * Math.PI / 180) * 0.0001,
+            ]);
+        }
+
+        ctx.fillStyle = 'green';
+        const verts = [];
+        for (const testPt of testPts) {
+            verts.push(calcVert(testPt));
+            if (showInts) ctx.fillRect(testPt[0] - 0.005, testPt[1] - 0.005, 0.01, 0.01);
+        }
+
+        if (stroke) {
+            for (let i = 0; i < verts.length; i ++) {
+                const sortedVerts = [
+                    verts[i][0] + 0.01, // These offsets give each vertex a unique ID, so two in a straight line don't interfere with each other
+                    verts[i][1] - 0.01,
+                    verts[(i + 1) % verts.length][0] + 0.02,
+                    verts[(i + 1) % verts.length][1] - 0.02,
+                ].sort(numericSort);
+
+                tileEdges[
+                    roundToPlace(sortedVerts[0], 5) + ' ' + roundToPlace(sortedVerts[1], 5) + ' ' + 
+                    roundToPlace(sortedVerts[2], 5) + ' ' + roundToPlace(sortedVerts[3], 5)
+                ] = [
+                    verts[i],
+                    verts[(i + 1) % verts.length],
+                ];
+            }
+        }
+        
+        if (fill) tiles.push(new Tile(verts));
+    }
+};
+const penrose = () => {
+    const intPts = {};
+
+    calcInts(intPts);
+    createTiles(intPts);
+};
+
+
+
+window.addEventListener('mousemove', e => {
+    const mx = e.offsetX,
+        my = e.offsetY;
+
+    if (showInts) { 
+        ctx.fillStyle = 'rgb(0, 255, 0)';
+        const smth = calcVert([(mx - width / 2) / 20, (my - height / 2) / 20]);
+        ctx.fillRect(smth[0] - 0.05, smth[1] - 0.05, 0.1, 0.1);
+        console.log(smth);
+    }
+});
+
+let offset = 0.5;
+const render = () => {
+    // if (symmetries === 6) symmetries = 7;
+    // if (symmetries > 20) symmetries = 5;
+
+    unitVecs.length = 0;
+    for (let i = 0; i < symmetries; i ++) unitVecs.push([Math.cos(2 * Math.PI * i / symmetries), Math.sin(2 * Math.PI * i / symmetries)]);
+
+    // steps = 2 * Math.round((radius / (symmetries - 1) - 1)/2) + 1;
+    // offsets = [];
+    // for (let i = 0; i < steps; i ++) offsets[i] = i - (steps - 1) * 0.5;
+    // offsets.sort((a,b) => Math.abs(a) - Math.abs(b));
+
+
+    let offsets = [0];
+    for (let i = 1; i < radius * symmetries; i ++) offsets.push(-i, i);
+
+    gamma = Array(symmetries);
+    gamma.fill(offset);
+
+    // o += 0.4
+    
+    // offset += 0.005;
+    // offset %= 1;
+    tiles.length = 0;
+    lines.length = 0;
+    tileEdges = {};
+
+    Tile.numTypes = 0;
+    Tile.types = {};
+    Tile.typeDists = [];
+    Tile.colors = [];
+
+    createLines();
+    penrose();
+    Tile.setColors();
+
+    // ctx.fillStyle = 'rgb(150, 150, 150)';
+    // ctx.fillRect(-width / 2, -height / 2, width * 2, height * 2);
+
+    if (fill) {
+        for (const t of tiles) t.display();
+    }
+    if (stroke) {
+        ctx.strokeStyle = 'rgba(150, 150, 150, 0.07)'//'#AAAAAA';
+        ctx.beginPath();
+        for (const edge of Object.values(tileEdges)) {
+            ctx.moveTo(edge[0][0], edge[0][1]);
+            ctx.lineTo(edge[1][0], edge[1][1]);
+        }
+        ctx.stroke();
+        ctx.closePath();
+    }
+    // canvas.style.filter = 'blur(1.5px)';
+};
+// window.setInterval(render, 1000);
+// symmetries = Infinity;
+render();
+
+        </script>
+    </body>
+</html>

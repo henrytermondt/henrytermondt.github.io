@@ -1,0 +1,132 @@
+:root {
+    --dark: #303030;
+    --dark-shadow: #30303080;
+
+    --light-text: #999999;
+
+    --middle-blue: #10a4a7;
+    --green: #1EB774;
+    --dark-blue: #0B5394;
+}
+body {
+    margin: 0;
+}
+.shadow {
+    box-shadow: 0px 2px 4px var(--dark-shadow);
+}
+
+#container {
+    position: relative;
+}
+
+/* Allows penrose and right side to be positioned as such */
+#hero {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Allows vertical stacking */
+#right {
+    display: flex;
+    flex-direction: column;
+}
+/* Centers description and button vertically */
+#info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    flex-grow: 1;
+}
+
+p {
+    font-weight: 300;
+    font-family: "Poppins";
+    color: var(--dark);
+}
+p strong {
+    font-weight: 500;
+}
+
+.resume-button {
+    border-style: none;
+    border-radius: 12px;
+    background-color: white;
+
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+
+    width: 39%;
+    height: 12%;
+}
+
+.gradient-text {
+    width: fit-content;
+
+    /* Creates a linear gradient and only shows it where the (transparent) text is */
+    background-image: linear-gradient(134deg, #1fbd78, #0b5394);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    background-color: white;
+}
+
+#penrose-hero {
+    margin: 30px 50px 0 30px;
+
+    background-image: url('/assets/penrose-variant.png');
+    background-position: center;
+    background-size: cover;
+
+    aspect-ratio: 0.785;
+
+    /* Used for positioning the accent */
+    anchor-name: --penrose;
+
+    /* Shadows should go over the accent */
+    z-index: 1;
+}
+#penrose-accent {
+    position: absolute;
+    position-anchor: --penrose;
+
+    top: calc(anchor(top));
+    right: anchor(left);
+
+    width: 8px;
+    height: 50px;
+    background-color: red;
+
+    background-image: linear-gradient(to bottom, var(--middle-blue), var(--dark-blue));
+
+    z-index: 0;
+}
+
+
+#title {
+    margin-top: auto;
+    margin-bottom: 0; 
+
+    transform: translateX(-0.1em);
+
+    color: var(--dark);
+    font-family: 'Montserrat';
+    font-weight: 500;
+    alignment-baseline: hanging;
+}
+
+nav {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 1vw;
+
+    color: var(--light-text);
+}
+.nav-link {
+    color: var(--light-text);
+    margin: 0 10px;
+}

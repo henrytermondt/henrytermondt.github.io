@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<!--
+Lorenz Attractor
+Finished: 5/30/23
+
+About:
+Completed in under a day! Use WASD to move and the mouse or arrow keys to look around.
+
+References:
+https://en.wikipedia.org/wiki/Lorenz_system
+
+-->
+<html>
+    <head>
+        <style>
+            * {
+                margin: 0;
+                overflow: hidden;
+            }
+            canvas {
+                display: block;
+                margin: auto;
+
+                background-color: white;
+            }
+
+        </style>
+    </head>
+    <body>
+        <canvas id = 'canvas' width = '400' height = '400'></canvas>
+        
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js'></script>
+
+        <script id = 'vertex-shader' type = 'glsl'>
+attribute vec3 aPos;
+attribute float aAges;
+
+varying float vAges;
+
+uniform mat4 projection;
+uniform mat4 view;
+
+void main() {
+    vAges = aAges;
+    gl_Position = projection * view * vec4(aPos, 1);
+}
+        </script>
+        <script id = 'fragment-shader' type = 'glsl'>
+precision highp float;
+
+varying float vAges;
+
+void main() {
+    //float c = pow(vAges, 1.0 / 1.5); //0.333, 0.145, 0.165
+
+    vec3 blue = vec3(0.043, 0.325, 0.580);
+    vec3 green = vec3(0.122, 0.741, 0.471);
+
+    gl_FragColor = vec4(mix(blue, green, pow(vAges, 2.0)), vAges);//vec4(r, g, b, a);//
+}
+        </script>
+        
+        <script src='verts.js'></script>
+        <script src='node.js'></script>
+        <script src='setup.js'></script>
+        
+        <script>
+
+const glCanvas = document.getElementById('canvas'),
+    gl = glCanvas.getContext('webgl', {premultipliedAlpha: false});
+
+// Draw transparency
+gl.enable(gl.BLEND)
+gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+glCanvas.width = window.innerWidth;
+glCanvas.height = window.innerHeight;
+
+function createShader(gl, type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.log(gl.getShaderInfoLog(shader));
+    }
+
+    return shader;
+}
+function createProgram(gl, vs, fs) {
+    const program = gl.createProgram();
+    gl.attachShader(program, vs);
+    gl.attachShader(program, fs);
+    gl.linkProgram(program);
+
+    return program;
+}
+
+const zeroVec = vec3.fromValues(0, 0, 0),
+    upVec = vec3.fromValues(0, 1, 0);
+const cam = {
+    rotOrigin: vec3.fromValues(0, 0, 30),
+
+    pos: vec3.fromValues(-49, 10, 12),
+    distance: 50.448,
+    rotX: 0.2,
+    rotY: 1.215,
+    vel: vec3.create(),
+    rotOverride: null,
+    up: upVec,
+    setView() {
+        this.rotY += 0.01;
+        vec3.rotateY(this.pos, this.pos, this.rotOrigin, 0.01);
+    }
+};
+
+// const keys = {};
+// window.addEventListener('keydown', e => keys[e.key] = true);
+// window.addEventListener('keyup', e => keys[e.key] = false);
+
+// window.addEventListener('mousedown', e => document.documentElement.requestPointerLock());
+// window.addEventListener('mousemove', e => {
+//     cam.rotX += e.movementY * 0.005;
+//     cam.rotY -= e.movementX * 0.005;
+// });
+
+let frame = 1;
+function main() {
+    const vertexSource = document.getElementById('vertex-shader').textContent,
+            fragmentSource = document.getElementById('fragment-shader').textContent;
+    
+    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexSource),
+        fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource),
+        program = createProgram(gl, vertexShader, fragmentShader);
+    
+    gl.useProgram(program);
+    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+
+    const aPos = gl.getAttribLocation(program, 'aPos'),
+        aAges = gl.getAttribLocation(program, 'aAges'),
+        uView = gl.getUniformLocation(program, 'view'),
+        uProjection = gl.getUniformLocation(program, 'projection');
+
+    const tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+    gl.viewport(0, 0, window.innerWidth, window.innerHeight);
+
+    flaggid = 1000;
+    let delta = 0,
+        pt = 0;
+    function render(t) {
+        // for (let j = 10; j--;) {
+            for (let i = 0; i < numNodes; i ++) {
+                step(nodes[i * 2], nodes[i * 2 + 1]);
+                addVerts(nodes[i * 2], nodes[i * 2 + 1], i);
+            }
+        // }
+
+        cam.setView();
+
+        // if (keys.a) {
+        //     cam.vel[0] += Math.cos(-cam.rotY) * 0.1;
+        //     cam.vel[2] += Math.sin(-cam.rotY) * 0.1;
+        // }
+        // if (keys.d) {
+        //     cam.vel[0] -= Math.cos(-cam.rotY) * 0.1;
+        //     cam.vel[2] -= Math.sin(-cam.rotY) * 0.1;
+        // }
+        // if (keys.w) {
+        //     cam.vel[0] -= Math.cos(-cam.rotY - Math.PI / 2) * 0.1;
+        //     cam.vel[2] -= Math.sin(-cam.rotY - Math.PI / 2) * 0.1;
+        // }
+        // if (keys.s) {
+        //     cam.vel[0] += Math.cos(-cam.rotY - Math.PI / 2) * 0.1;
+        //     cam.vel[2] += Math.sin(-cam.rotY - Math.PI / 2) * 0.1;
+        // }
+        // if (keys.Shift) cam.vel[1] -= 0.1;
+        // if (keys[' ']) cam.vel[1] += 0.1;
+
+        const hor = vec2.fromValues(cam.vel[0], cam.vel[2]),
+            hlen = vec2.length(hor);
+        if (hlen > 1.5) {
+            cam.vel[0] *= 1.5 / hlen;
+            cam.vel[2] *= 1.5 / hlen;
+        }
+        if (Math.abs(cam.vel[1]) > 1.5) cam.vel[1] = 1.5 * Math.sign(cam.vel[1]);
+
+        // if (!keys.a && !keys.d && !keys.w && !keys.s) cam.vel[0] *= 0.9, cam.vel[2] *= 0.9;
+        // if (!keys.Shift && !keys[' ']) cam.vel[1] *= 0.9;
+
+        // cam.pos[0] += cam.vel[0];
+        // cam.pos[1] += cam.vel[1];
+        // cam.pos[2] += cam.vel[2];
+
+
+        // if (keys.ArrowLeft) cam.rotY += 0.05;
+        // if (keys.ArrowRight) cam.rotY -= 0.05;
+        // if (keys.ArrowUp) cam.rotX -= 0.05;
+        // if (keys.ArrowDown) cam.rotX += 0.05;
+
+        if (Math.abs(cam.rotX) > Math.PI * 0.49) cam.rotX = Math.PI * 0.49 * Math.sign(cam.rotX);
+        
+        const fullPositions = [];
+        for (let i = 0; i < numNodes; i ++) fullPositions.push(...positions[i]);
+        
+        const posBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(fullPositions), gl.STATIC_DRAW);
+        
+        gl.vertexAttribPointer(
+            aPos,
+            3,
+            gl.FLOAT,
+            false,
+            0,
+            0,
+        );
+        
+        gl.enableVertexAttribArray(aPos);
+
+
+        const ages = new Float32Array(positions[0].length * numNodes);
+        for (let i = 0; i < fullPositions.length / 3; i ++) {
+            ages[i] = (i % (positions[0].length / 3)) / (positions[0].length / 3);
+        }
+
+        const ageBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, ageBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, ages, gl.STATIC_DRAW);
+        
+        gl.vertexAttribPointer(
+            aAges,
+            1,
+            gl.FLOAT,
+            false,
+            0,
+            0,
+        );
+        
+        gl.enableVertexAttribArray(aAges);
+
+        gl.clearColor(0.953, 0.953, 0.953, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        
+        const ppm = mat4.create();
+        mat4.perspective(ppm, 75*Math.PI/180, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        let rotMat;
+        if (cam.rotOverride) rotMat = cam.rotOverride;
+        else {
+            rotMat = vec3.fromValues(0, 0, 1);
+            vec3.rotateX(rotMat, rotMat, zeroVec, cam.rotX);
+            vec3.rotateY(rotMat, rotMat, zeroVec, cam.rotY);
+        }
+        
+        const lookAt = mat4.create();
+        mat4.lookAt(lookAt, cam.pos, vec3.add(vec3.create(), cam.pos, rotMat), cam.up);
+
+        gl.uniformMatrix4fv(uProjection, false, ppm);
+        gl.uniformMatrix4fv(uView, false, lookAt);
+
+        gl.drawArrays(gl.TRIANGLES, 0, fullPositions.length / 3);
+        
+        delta = t - pt;
+        // console.log('FPS: ' + (1000 / delta).toFixed(1));
+        pt = t;
+
+        frame ++;
+        window.requestAnimationFrame(render);
+    }
+
+    fetch('nodes.json').then(result => {
+        result.json().then(nodesStr => {
+            parseNodes(nodesStr);
+
+            console.log(nodes);
+            
+            render();
+        }, () => console.log('Could not parse JSON'));
+    }, reason => {
+        console.log('Could not fetch nodes.json:', 'reason');
+    })
+}
+main();
+
+        </script>
+    </body>
+</html>
