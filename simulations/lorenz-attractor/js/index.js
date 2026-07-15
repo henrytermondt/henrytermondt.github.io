@@ -22,7 +22,6 @@ const main = async () => {
 
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
 
-    flaggid = 1000;
     let delta = 0,
         pt = 0;
     function render(t) {
@@ -104,8 +103,8 @@ const main = async () => {
 
         gl.drawArrays(gl.TRIANGLES, 0, fullPositions.length / 3);
         
-        delta = t - pt;
-        // console.log('FPS: ' + (1000 / delta).toFixed(1));
+        dt = t - pt;
+        if (dt > 40) dt = 40; // Prevents excessively large time steps
         pt = t;
 
         window.requestAnimationFrame(render);
@@ -114,7 +113,7 @@ const main = async () => {
     fetch('nodes.json').then(result => {
         result.json().then(nodesStr => {
             parseNodes(nodesStr);
-            render();
+            render(document.timeline.currentTime);
         }, () => console.log('Could not parse JSON')); // This should never happen
     }, reason => {
         console.log('Could not fetch nodes.json:', 'reason');

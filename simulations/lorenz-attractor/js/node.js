@@ -1,5 +1,7 @@
 let numNodes = null;
-const nodes = [];
+const nodes = [],
+    nodeSpeed = 0.0005;
+
 
 const parseNodes = arr => {
     for (const node of arr) {
@@ -14,7 +16,7 @@ const parseNodes = arr => {
 };
 
 function step(node, lastNode) {
-    node[0] += (sigma * (node[1] - node[0])) * dt;
-    node[1] += (node[0] * (ro - node[2]) - node[1]) * dt;
-    node[2] += (node[0] * node[1] - beta * node[2]) * dt;
+    node[0] += (sigma * (node[1] - node[0])) * nodeSpeed * dt;
+    node[1] += (node[0] * (ro - node[2]) - node[1]) * nodeSpeed * dt;
+    node[2] += (node[0] * node[1] - beta * node[2]) * nodeSpeed * dt;
 }
