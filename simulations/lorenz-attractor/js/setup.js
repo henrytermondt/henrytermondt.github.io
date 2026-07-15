@@ -44,11 +44,8 @@ const cam = {
     rotOrigin: vec3.fromValues(0, 0, 30),
     rotSpeed: 0.001,
     pos: vec3.fromValues(-55, 10, 12),
-    distance: 50.448,
     rotX: 0.2,
     rotY: 1.215,
-    vel: vec3.create(),
-    rotOverride: null,
     up: upVec,
     setView() {
         this.rotY += this.rotSpeed;

@@ -12,10 +12,11 @@ const rot = (out, vec, axis, theta) => {
     return out;
 };
 
+// Makes a triangular tube following the path of the node
 function addVerts(node, lastNode, id, follow = false) {
     const dirVec = vec3.sub(vec3.create(), node, lastNode);
     vec3.normalize(dirVec, dirVec);
-    const normal = vec3.cross(vec3.create(), dirVec, upVec); // A vector representing the normal
+    const normal = vec3.cross(vec3.create(), dirVec, upVec);
     vec3.normalize(normal, normal);
 
     vec3.scale(normal, normal, 0.1);
@@ -35,6 +36,7 @@ function addVerts(node, lastNode, id, follow = false) {
     tri1.c = vec3.add(vec3.create(), lastNode, normal);
     tri2.c = vec3.add(vec3.create(), node, normal);
 
+    // Creates vertices
     positions[id].push(
         // Face 1
         tri1.a[0], tri1.a[1], tri1.a[2],
