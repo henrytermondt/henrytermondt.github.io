@@ -1,3 +1,6 @@
+let paused = true;
+let render;
+
 const main = async () => {
     const vertexSource = await (await fetch('./shaders/vertex-shader.glsl')).text(),
         fragmentSource = await (await fetch('./shaders/fragment-shader.glsl')).text();
@@ -19,7 +22,7 @@ const main = async () => {
 
     let delta = 0,
         pt = 0;
-    function render(t) {
+    render = (t=document.timeline.currentTime) => {
         for (let i = 0; i < numNodes; i ++) {
             step(nodes[i * 2], nodes[i * 2 + 1]);
             addVerts(nodes[i * 2], nodes[i * 2 + 1], i);
@@ -73,7 +76,7 @@ const main = async () => {
         
         // Creates perspective projection matrix
         const ppm = mat4.create();
-        mat4.perspective(ppm, 75*Math.PI/180, window.innerWidth / window.innerHeight, 0.1, 1000);
+        mat4.perspective(ppm, 45*Math.PI/180, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 
         let rotMat = vec3.fromValues(0, 0, 1);
@@ -89,19 +92,36 @@ const main = async () => {
         gl.drawArrays(gl.TRIANGLES, 0, fullPositions.length / 3);
         
         dt = t - pt;
-        if (dt > 40) dt = 40; // Prevents excessively large time steps
+        if (dt > 20) dt = 20; // Prevents excessively large time steps
         pt = t;
 
-        window.requestAnimationFrame(render);
+        if (!paused) window.requestAnimationFrame(render);
     }
 
     fetch('nodes.json').then(result => {
         result.json().then(nodesStr => {
             parseNodes(nodesStr);
-            render(document.timeline.currentTime);
+            render();
         }, () => console.log('Could not parse JSON')); // This should never happen
     }, reason => {
         console.log('Could not fetch nodes.json:', 'reason');
     })
 }
 main();
+
+
+window.onmessage = message => {
+    switch (message.data) {
+        case 'resize':
+            glCanvas.width = window.innerWidth;
+            glCanvas.height = window.innerHeight;
+        break;
+        case 'play':
+            paused = false;
+            render();
+        break;
+        case 'pause':
+            paused = true;
+        break;
+    }
+};

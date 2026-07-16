@@ -19,7 +19,7 @@ function addVerts(node, lastNode, id, follow = false) {
     const normal = vec3.cross(vec3.create(), dirVec, upVec);
     vec3.normalize(normal, normal);
 
-    vec3.scale(normal, normal, 0.1);
+    vec3.scale(normal, normal, 0.2);
 
     const tri1 = {
         a: vec3.add(vec3.create(), lastNode, normal),

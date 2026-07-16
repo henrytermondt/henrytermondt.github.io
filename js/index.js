@@ -5,8 +5,11 @@ they simply represent what I thought looked best
 
 */
 
+
 let width = window.innerWidth,
     height = window.innerHeight;
+
+
 
 const heroAspectRatio = 13/6.9,//1.529,
     penroseAspectRatio = 0.785;
@@ -33,7 +36,9 @@ const setHero = () => {
     const penroseWidth = containerWidth * 5 / 13;
 
     const titleSize = (containerWidth - penroseWidth - 50 - 30 * 2) / titleScale;
-    title.style.fontSize = titleSize + 'px';
+    // title.style.fontSize = titleSize + 'px';
+
+    document.documentElement.style.setProperty('--ts', titleSize + 'px');
 
     // Penrose positioning
     penroseHero.style.width = penroseWidth + 'px';
@@ -41,25 +46,45 @@ const setHero = () => {
     penroseAccent.style.transform = `translateY(${penroseWidth * 0.25}px)`;
 
     // Setting font sizes
-    descriptionHero.style.fontSize = titleSize * 0.28 + 'px';
-    for (const b of resumeButtons) {
-        b.style.fontSize = titleSize * 0.37 + 'px';
-    }
+    // descriptionHero.style.fontSize = titleSize * 0.28 + 'px';
+    // for (const b of resumeButtons) {
+    //     b.style.fontSize = titleSize * 0.37 + 'px';
+    // }
 };
 
+const about = document.getElementById('about');
+const aboutLeft = document.getElementById('about-left');
+const lorenzIframe = document.getElementById('lorenz-attractor'),
+    lorenzAnchor = document.getElementById('lorenz-anchor');
 
+// Handles disabling/enabling Lorenz Attractor
+const lorenzObserver = new IntersectionObserver(entries => {
+    lorenzIframe.contentWindow.postMessage(entries[0].isIntersecting ? 'play' : 'pause');
+}, {threshold: 0});
 
-
-
+const setLorenz = () => {
+    lorenzIframe.style.height = lorenzAnchor.style.height = window.getComputedStyle(aboutLeft).height;
+    lorenzIframe.style.display = 'block';
+};
 
 const resize = () => {
-    console.log('hi')
     width = window.innerWidth;
     height = window.innerHeight;
 
     setHero();
+    setLorenz();
+    lorenzIframe.contentWindow.postMessage('resize');
 };
+
+const loadSimulations = () => {
+    setLorenz();
+    lorenzObserver.observe(lorenzIframe);
+};
+
 
 window.onresize = resize;
 
-setHero();
+window.onload = () => {
+    resize();
+    loadSimulations();
+};

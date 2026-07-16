@@ -18,6 +18,13 @@ gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 glCanvas.width = window.innerWidth;
 glCanvas.height = window.innerHeight;
 
+window.onresize = () => {
+    glCanvas.width = window.innerWidth;
+    glCanvas.height = window.innerHeight;
+
+    gl.viewport(0, 0, window.innerWidth, window.innerHeight);
+};
+
 function createShader(gl, type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -43,9 +50,9 @@ const zeroVec = vec3.fromValues(0, 0, 0),
 const cam = {
     rotOrigin: vec3.fromValues(0, 0, 30),
     rotSpeed: 0.001,
-    pos: vec3.fromValues(-55, 10, 12),
-    rotX: 0.2,
-    rotY: 1.215,
+    pos: vec3.fromValues(-90, 12, 12),
+    rotX: 0.13,
+    rotY: 1.36,
     up: upVec,
     setView() {
         this.rotY += this.rotSpeed;
