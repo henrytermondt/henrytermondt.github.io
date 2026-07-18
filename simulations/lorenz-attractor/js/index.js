@@ -96,32 +96,32 @@ const main = async () => {
         pt = t;
 
         if (!paused) window.requestAnimationFrame(render);
-    }
+    };
+
+    window.onmessage = message => {
+        switch (message.data) {
+            case 'resize':
+                glCanvas.width = window.innerWidth;
+                glCanvas.height = window.innerHeight;
+            break;
+            case 'play':
+                paused = false;
+                render();
+            break;
+            case 'pause':
+                paused = true;
+            break;
+        }
+    };
 
     fetch('nodes.json').then(result => {
         result.json().then(nodesStr => {
             parseNodes(nodesStr);
             render();
+            window.parent.postMessage('ready');
         }, () => console.log('Could not parse JSON')); // This should never happen
     }, reason => {
         console.log('Could not fetch nodes.json:', 'reason');
     })
 }
 main();
-
-
-window.onmessage = message => {
-    switch (message.data) {
-        case 'resize':
-            glCanvas.width = window.innerWidth;
-            glCanvas.height = window.innerHeight;
-        break;
-        case 'play':
-            paused = false;
-            render();
-        break;
-        case 'pause':
-            paused = true;
-        break;
-    }
-};

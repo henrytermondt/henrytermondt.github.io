@@ -21,6 +21,8 @@
     <link href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap' rel='stylesheet'>
     <!-- <link rel='icon' type='image/png' href='/Psilab/favicon.ico'/> -->
     <link rel='stylesheet' href='/styles.css'>
+
+    <link rel='icon' href='/favicon.ico'>
 </head>
 <body>
     <div id='container'>
@@ -58,15 +60,15 @@
 
         <section id='about'>
             <div id='about-horizontal-wrapper'>
-                <h2 id='about-separate' class='about-header'>About</h2>
+                <h2 id='about-separate' class='about-header'>About Me</h2>
                 <div id='about-left'>
                     <h2 id='about-with' class='about-header'>About</h2>
                     <div>
                         <p>
                             As a part of Rice University’s class of 2030, I’m studying
-                            CS and planning on minoring in Computational and Applied
+                            <strong>CS</strong> and planning on minoring in Computational and Applied
                             Mathematics as well as Physics. I’m especially interested
-                            in parallel computing and its application in science.
+                            in <strong>parallel computing</strong> and its application in <strong>science</strong>.
                         </p>
                         <p>
                             I build simulations and visualizations in WebGL/GLSL and
@@ -95,7 +97,42 @@
                     <div id='sw-header-underline'></div>
                 </div>
             </div>
+
+            <section id='barnes-hut'>
+                <canvas id='bh-canvas'></canvas>
+                <div id='bh-info-card' class='sw-info-card'>
+                    <div>
+                        <h3>Barnes-Hut</h3>
+                        <div class='sw-underline'></div>
+                    </div>
+                    <p>
+                        Simulating galaxies colliding with 10,000,000 stars using a
+                        hybrid CPU-GPU Barnes-Hut algorithm
+                    </p>
+                </div>
+            </section>
+            <section id='schrodinger'>
+                <canvas id='s-canvas'></canvas>
+                <div id='s-info-card' class='sw-info-card'>
+                    <div>
+                        <h3>Real-Time PDE Solver</h3>
+                        <div class='sw-underline'></div>
+                    </div>
+                    <p>
+                        Designed novel algorithm for GPU accelerated numeric solvers
+                        for PDEs (e.g. Schrödinger equation above) to run on school
+                        and student laptops
+                    </p>
+                </div>
+            </section>
         </section>
+
+        <section id='portfolio'>
+            
+        </section>
+
+
+        <div id='overlay'></div>
     </div>
     
     <script src='https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js'></script>

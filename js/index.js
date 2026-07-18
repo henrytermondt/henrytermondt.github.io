@@ -74,13 +74,20 @@ const resize = () => {
     setHero();
     setLorenz();
     lorenzIframe.contentWindow.postMessage('resize');
+
+    document.getElementById('about-separate').style.height = window.getComputedStyle(aboutLeft).height;
 };
 
 const loadSimulations = () => {
-    setLorenz();
-    lorenzObserver.observe(lorenzIframe);
+    
+    // lorenzIframe.contentWindow.postMessage('play');
 };
-
+window.onmessage = message => {
+    if (message.source === lorenzIframe.contentWindow && message.data === 'ready') {
+        setLorenz();
+        lorenzObserver.observe(lorenzIframe);
+    }
+}
 
 window.onresize = resize;
 
