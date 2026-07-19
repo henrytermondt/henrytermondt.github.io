@@ -63,8 +63,13 @@ const lorenzObserver = new IntersectionObserver(entries => {
 }, {threshold: 0});
 
 const setLorenz = () => {
-    lorenzIframe.style.height = lorenzAnchor.style.height = window.getComputedStyle(aboutLeft).height;
+    const referenceHeight = window.getComputedStyle(aboutLeft).height;
+    lorenzIframe.style.height = lorenzAnchor.style.height = referenceHeight;
     lorenzIframe.style.display = 'block';
+
+    if (width <= 1000) {
+        lorenzAnchor.style.height = +referenceHeight.slice(0, -2) * 0.8 + 'px';
+    }
 };
 
 const resize = () => {
@@ -95,3 +100,12 @@ window.onload = () => {
     resize();
     loadSimulations();
 };
+
+for (let i = 0; i < 4; i ++) {
+    window.setTimeout(async () => {
+        const pr = window.scrollTo(0, document.body.scrollHeight);
+        // console.log(pr);
+        // console.log(await pr);
+        console.log('did it work?', i)
+    }, 100 + i * 200)
+}
