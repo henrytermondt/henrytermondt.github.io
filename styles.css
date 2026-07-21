@@ -563,7 +563,41 @@ iframe {
 
 
 footer {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+
+    padding: 25px 0;
+
     background-color: var(--light-background);
+}
+#f-links {
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 50px;
+    margin-right: 25px;
+
+    transform: translateY(calc(-0.07 * var(--ts)));
+}
+#f-links strong {
+    font-weight: 600;
+}
+#f-links a {
+    color: var(--middle-text);
+    font-weight: 200;
+}
+#logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: calc(100% - 200px);
+}
+
+
+footer img {
+    /* flex: 1 1 auto; */
 }
 
 
