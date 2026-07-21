@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 500 500" fill="none">
+  <ellipse style="" cx="249.348" cy="250.217" rx="249.348" ry="249.566" fill="black"></ellipse>
+  <rect x="100" y="150" width="300" height="200" style="stroke: rgb(255, 255, 255); fill: none; stroke-width: 31px;" rx="22.303" ry="22.303"></rect>
+  <path d="M -274.919 -251.329 Q -250.502 -268.68 -226.085 -251.329 L -112.141 -170.355 Q -87.724 -153.004 -136.557 -153.004 L -364.447 -153.004 Q -413.28 -153.004 -388.863 -170.355 Z" style="stroke: rgb(255, 255, 255); fill: none; stroke-width: 23px; transform-box: fill-box; transform-origin: 50% 50%;" transform="matrix(-1, 0, 0, -1, 501.003998, 413.008484)"></path>
+</svg>

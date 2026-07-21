@@ -74,12 +74,15 @@ p strong {
 
     font-weight: 500;
     font-size: calc(var(--ts) * 0.37);
-
-    width: 39%;
-    height: 12%;
+    font-family: 'Poppins', sans-serif;
 
     cursor: pointer;
 }
+#hero .resume-button {
+    width: 39%;
+    height: 12%;
+}
+
 
 .gradient-text {
     width: fit-content;
@@ -477,14 +480,91 @@ iframe {
     background-image: linear-gradient(to bottom, var(--middle-blue), var(--dark-blue));
 }
 
+
+
+
+#contact {
+    display: flex;
+    flex-direction: row;
+    
+    margin: 150px 50px 150px 0;
+}
 #contact .header {
-    margin: 50px;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+#c-wrapper {
+    margin: 0 50px;
+}
+#contact .resume-button {
+    width: 260px;
+    height: 65px;
+
+    font-size: 30px;
+    border-radius: 18px;
+
+    margin-bottom: 10px;
+}
+#c-links {
+    /* margin: 25px 50px; */
+
+    margin-right: 50px;
+
+    font-size: 23px;
+}
+#c-links a {
+    color: var(--dark) !important;
+}
+.link-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    margin-top: 35px;
+    margin-left: 5px;
+}
+.logo {
+    height: 1.3em;
+    opacity: 81%;
+
+    margin: 0 15px;
+}
+
+#c-penrose-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    flex: 1 1 auto;
+}
+#c-penrose {
+    flex: 1 1 auto;
+
+    height: 100%;
+    max-width: 60vw;
+
+    background-image: url('/assets/penrose-variant.png');
+    background-size: cover;
+    background-position: center;
+}
+
+@media (width <= 750px) {
+    #c-penrose-wrapper {
+        display: none;
+    }
+}
+@media (width <= 550px) {
+    #contact .header {
+        font-size: 55px;
+    }
 }
 
 
 
 
-
+footer {
+    background-color: var(--light-background);
+}
 
 
 #overlay {
