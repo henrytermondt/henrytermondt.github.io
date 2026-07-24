@@ -3,7 +3,7 @@ let width, height, dim;
 const resize = () => {
     width = window.innerWidth;
     height = window.innerHeight;
-    dim = Math.min(width, height);
+    dim = 800;//Math.min(width, height);
 
     glCanvas.width = dim;
     glCanvas.height = dim;
@@ -41,6 +41,26 @@ fsButton.onclick = e => {
     }
 };
 
+const zip = new JSZip();
+let files = 0;
+const saveImage = blob => {
+    zip.file(files + '.webp', blob);
+    console.log(files + '.webp');
+    files ++;
+};
+const saveAll = () => {
+    zip.generateAsync({type:"blob"}).then(function(content) {
+        // console.log(content);
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a')
+        a.href = url;
+        a.download = 'images.zip';
+        a.click();
+        // console.log(a);
+    });
+};
+
+let frame = 0;
 
 let loop;
 init().then(() => {
@@ -51,14 +71,26 @@ init().then(() => {
 
     renderPoints();
 
-    loop = () => {
+    let pt = document.timeline.currentTime;
+    loop = (t) => {
         reconstructPoints(pointsArr);
 
         constructTree();
         collapseTree(root);
 
         updatePoints();
-        renderPoints();
+        // renderPoints();
+
+        // console.log('fps:', (1000 / (t - pt)).toFixed(4));
+        // pt = t;
+
+        // console.log(frame);
+        if (frame > 200 && frame % 2 === 0) {
+            renderPoints();
+            glCanvas.toBlob(saveImage, 'image/webp', 0.8);
+        }
+
+        frame ++;
     };
 
     ready = true;

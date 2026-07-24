@@ -5,9 +5,12 @@ they simply represent what I thought looked best
 
 */
 
-
-let width = window.innerWidth,
-    height = window.innerHeight;
+// const lenis = new Lenis();
+// lenis.on('scroll', ScrollTrigger.update);
+// gsap.ticker.add((time) => {
+//   lenis.raf(time * 1000); 
+// });
+// gsap.ticker.lagSmoothing(0);
 
 
 
@@ -80,6 +83,11 @@ const resize = () => {
     setLorenz();
     lorenzIframe.contentWindow.postMessage('resize');
 
+    setBH();
+    setS();
+
+    ScrollTrigger.refresh();
+
     document.getElementById('about-separate').style.height = window.getComputedStyle(aboutLeft).height;
 };
 
@@ -101,11 +109,11 @@ window.onload = () => {
     loadSimulations();
 };
 
-for (let i = 0; i < 4; i ++) {
-    window.setTimeout(async () => {
-        const pr = window.scrollTo(0, document.body.scrollHeight);
-        // console.log(pr);
-        // console.log(await pr);
-        console.log('did it work?', i)
-    }, 100 + i * 200)
-}
+// for (let i = 0; i < 4; i ++) {
+//     window.setTimeout(async () => {
+//         const pr = window.scrollTo(0, document.body.scrollHeight);
+//         // console.log(pr);
+//         // console.log(await pr);
+//         console.log('did it work?', i)
+//     }, 100 + i * 200)
+// }
