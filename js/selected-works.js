@@ -1,43 +1,30 @@
 const bhWrapper = document.getElementById('barnes-hut');
 const bhCanvas = document.getElementById('bh-canvas'),
     bhctx = bhCanvas.getContext('2d');
+const sWrapper = document.getElementById('schrodinger');
+const sCanvas = document.getElementById('s-canvas'),
+    sctx = sCanvas.getContext('2d');
 
-const renderBH = () => {
-    // bhctx.fillStyle = 'red'
-    // bhctx.fillRect(0, 0, 1000, 1000);
+// Animated with GSAP
+const bhPosition = {
+    frame: 0,
+};
+const sPosition = {
+    frame: 0,
 };
 
 
 const setBH = () => {
     bhCanvas.width = width;
     bhCanvas.height = height;
-    // console.log(width, height);
-
-    renderBH();
-};
-
-
-const sWrapper = document.getElementById('schrodinger');
-const sCanvas = document.getElementById('s-canvas'),
-    sctx = sCanvas.getContext('2d');
-
-const renderS = () => {
-    // sctx.fillStyle = 'blue';
-    // sctx.fillRect(0, 0, 1000, 1000);
-};
-
-// Animated with GSAP
-const bhPosition = {
-    frame: 0,
-};
-
-const setS = () => {
-    sCanvas.width = 800;
-    sCanvas.height = 800;
 
     bhctx.drawImage(bhFrames[bhPosition.frame], (width - 800) / 2, (height - 800) / 2);
+};
+const setS = () => {
+    sCanvas.width = width;
+    sCanvas.height = height;
 
-    renderS();
+    sctx.drawImage(sFrames[sPosition.frame], (width - 800) / 2, (height - 800) / 2);
 };
 
 const bhFrames = [];
@@ -47,22 +34,18 @@ const loadBHFrames = () => { // Note, this leaves out the very last frame
         img.src = `/assets/barnes-hut-frames/${i}.webp`;
         bhFrames.push(img);
     }
-
-    // Draw first one to set it up
 };
-
 loadBHFrames();
-// gsap.to('#bh-canvas', {
-//     scrollTrigger: {
-//         target: '#bh-canvas',
-//         start: 'top top',
-//         end: 'bottom bottom',
-//         pin: true,
-//         scrub: true,
-//     }
-// });
-// gsap.utils.toArray('.simulation-canvas').forEach(el => {
 
+const sFrames = [];
+const loadSFrames = () => {
+    for (let i = 0; i < 200; i ++) {
+        const img = new Image();
+        img.src = `/assets/schrodinger-frames/${i}.avif`;
+        sFrames.push(img);
+    }
+};
+loadSFrames();
 
 
 gsap.to(bhPosition, {
@@ -81,11 +64,8 @@ gsap.to(bhPosition, {
 });
 
 
-const sPosition = {
-    frame: 0,
-};
 gsap.to(sPosition, {
-    frame: bhFrames.length - 1,
+    frame: sFrames.length - 1,
     snap: 'frame',
     scrollTrigger: {
         trigger: sCanvas,
@@ -95,7 +75,7 @@ gsap.to(sPosition, {
         scrub: 1,
     },
     onUpdate(self) {
-        sctx.drawImage(bhFrames[sPosition.frame], (width - 800) / 2, (height - 800) / 2);
+        sctx.drawImage(sFrames[sPosition.frame], (width - 800) / 2, (height - 800) / 2);
     }
 });
 

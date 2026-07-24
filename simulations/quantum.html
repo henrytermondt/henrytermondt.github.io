@@ -325,14 +325,15 @@ void main() {
     //    1.3*pow(module, 1.0)
     //);
 
-    vec3 low = vec3(0.02, 0, 0.02);
-    vec3 high = 2.0 * vec3(0.7, 0.5, 0.4);
-    
-    gl_FragColor = vec4(mix(low, high, pow(module, 1.3)), 1);
-    // gl_FragColor = vec4(0.8*col * module, 1);
+    vec3 low = vec3(0.88, 0.28, 0.54);//vec3(0.02, 0, 0.02);
+    vec3 high = vec3(0.95, 0.61, 0.44);//vec3(0.96, 0.67, 0.42);//2.0 * vec3(0.7, 0.5, 0.4);
+    vec3 col = mix(low, high, pow(module, 1.0));
+    //gl_FragColor = vec4(module, module, module, 1);//vec4(mix(low, high, pow(module, 1.3)), 1);//
+    gl_FragColor = vec4(col * module, 1);
 }
 
     </script>
+    <script src='https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'></script>
 
     <!-- Setup -->
     <script>
@@ -343,7 +344,7 @@ the edge of the grid.
 */
 
 // Simulation constants
-const n = 800,//(l / 0.05 | 0) + 1, // Edge length
+const n = 802,//(l / 0.05 | 0) + 1, // Edge length
     ni = (n - 2) ** 2, // Size of matricies
     no = (n - 3) * (n - 2); // Offset for lone diagonals
 const dx = 0.05, // Step size 
@@ -530,6 +531,27 @@ octx.putImageData(imgData, 0, 0);
 // const startTime = performance.now();
 let pause = false;
 
+const zip = new JSZip();
+let files = 0;
+const saveImage = blob => {
+    zip.file(files + '.png', blob);
+    console.log(files + '.png', blob.type);
+    files ++;
+};
+const saveAll = () => {
+    zip.generateAsync({type:"blob"}).then(function(content) {
+        // console.log(content);
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a')
+        a.href = url;
+        a.download = 'images.zip';
+        a.click();
+        // console.log(a);
+    });
+};
+
+let frame = 0;
+
 const loop = () => {
     if (pause) {
         window.requestAnimationFrame(loop);
@@ -549,6 +571,13 @@ const loop = () => {
 
     ctx.drawImage(glCanvas, 0, 0);
     ctx.drawImage(overlay, 0, 0);
+
+    if (frame > 20 && frame % 4 === 0 && frame <= 820) {
+        // renderPoints();
+        canvas.toBlob(saveImage, 'image/avif', 0.6);
+    }
+
+    frame ++;
 
     // if (frames < 2000) {
     //     frames ++;
