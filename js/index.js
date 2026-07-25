@@ -24,7 +24,7 @@ const offscreenCanvas = new OffscreenCanvas(width, height)
 
 const resumeButtons = document.querySelectorAll('.resume-button');
 
-const container = document.getElementById('container');
+const containers = document.querySelectorAll('.container');
 const right = document.getElementById('right');
 const title = document.getElementById('title'),
     titleScale = 8.35;
@@ -33,8 +33,10 @@ const penroseHero = document.getElementById('penrose-hero'),
 const descriptionHero = document.getElementById('description');
 const setHero = () => {
     let containerWidth = width / heroAspectRatio < height ? width : height * heroAspectRatio;
-    container.style.width = containerWidth + 'px';
-    container.style.left = (width - containerWidth) * 0.5 + 'px';
+    for (const container of containers) {
+        container.style.width = containerWidth + 'px';
+        container.style.left = (width - containerWidth) * 0.5 + 'px';
+    }
 
     const penroseWidth = containerWidth * 5 / 13;
 

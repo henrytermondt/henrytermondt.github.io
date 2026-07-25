@@ -62,8 +62,6 @@ gsap.to(bhPosition, {
         bhctx.drawImage(bhFrames[bhPosition.frame], (width - 800) / 2, (height - 800) / 2);
     }
 });
-
-
 gsap.to(sPosition, {
     frame: sFrames.length - 1,
     snap: 'frame',
@@ -80,29 +78,43 @@ gsap.to(sPosition, {
 });
 
 
-    // ScrollTrigger.create({
-    //     trigger: el,
-    //     start: 'top',
-    //     end: 'bottom',
-    //     pin: true,
-    //     anticipatePinning: true,
-    //     // scrub: 10,
-    //     // onUpdate(self) {
-    //     //     let frame = self.progress * (bhFrames.length - 1) | 0;
 
-    //     //     bhctx.drawImage(bhFrames[frame], (width - 800) / 2, (height - 800) / 2);
-    //     // }
-    // });
-// });
 
-// ScrollTrigger.create({
-//     trigger: sCanvas,
-//     start: 'top',
-//     end: 'bottom',
-//     pin: true,
-//     anticipatePinning: true,
-//     scrub: true,
-//     onUpdate(self) {
-//         console.log(self.progress);
-//     }
+
+const selectedWorksWrapper = document.getElementById('sw-header-wrapper');
+console.log(selectedWorksWrapper);
+
+const fadeTL = gsap.timeline({
+    scrollTrigger: {
+        trigger: selectedWorksWrapper,
+        start: 'top top',
+        toggleActions: 'restart none none reverse',
+        // markers: true,
+        // end: 'bottom top'
+    },
+    ease: 'none',
+    duration: 0.3,
+});
+fadeTL.to(selectedWorksWrapper, {
+    backgroundColor: 'black',
+}, 0);
+fadeTL.to('#sw-header', {
+    color: 'white',
+}, 0);
+fadeTL.to('#sw-header-underline', {
+    backgroundImage: 'linear-gradient(to right, #e1488a, #f4ab6b)',
+}, 0);
+fadeTL.to('#sw-color-padding-before', { // Transparent, but with starting values to make interpolation better
+    backgroundImage: 'linear-gradient(#FFFFFF00, #000000 50%)',
+}, 0);
+fadeTL.to('#sw-color-padding', {
+    backgroundImage: 'linear-gradient(#FFFFFF00 50%, #00000000 100%)',
+}, 0);
+// fadeTL.to(selectedWorksWrapper, {
+//     backgroundColor: 'black',
+//     duration: 0.3,
 // });
+// gsap.to();
+
+
+

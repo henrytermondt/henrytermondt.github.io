@@ -28,7 +28,7 @@
     <link rel='icon' href='/favicon.ico'>
 </head>
 <body>
-    <div id='container'>
+    <div class='container'>
         <section id='hero'>
             <div id='penrose-hero' class='shadow'></div>
             <div id='penrose-accent'></div>
@@ -48,17 +48,12 @@
             </div>
 
             <nav>
-                <a class='nav-link' href='#place-holder'>About Me</a> |
-                <a class='nav-link' href='#place-holder'>Selected Works</a> |
-                <a class='nav-link' href='#place-holder'>Portfolio</a> |
-                <a class='nav-link' href='#place-holder'>Experience</a> |
-                <a class='nav-link' href='#place-holder'>Contact</a>
+                <a class='nav-link' href='#about'>About Me</a> |
+                <a class='nav-link' href='#selected-works'>Selected Works</a> |
+                <a class='nav-link' href='#portfolio'>Portfolio</a> |
+                <a class='nav-link' href='#experience'>Experience</a> |
+                <a class='nav-link' href='#contact'>Contact</a>
             </nav>
-
-            <div>
-
-            </div>
-
         </section>
 
         <section id='about'>
@@ -92,48 +87,51 @@
                 </iframe>
             </div>
         </section>
-
-        <section id='selected-works'>
+    </div>
+    
+    <section id='selected-works'>
+        <div>
+            <!-- Color wrappers exist to make the transition look smooth before an after the header -->
+            <div id='sw-color-padding-before'></div>
             <div id='sw-header-wrapper'>
                 <div>
                     <h2 id='sw-header'>Selected Works</h2>
                     <div id='sw-header-underline'></div>
                 </div>
             </div>
+            <div id='sw-color-padding'></div>
+        </div>
 
-            <section id='barnes-hut'>
-                <!-- <div class='simulation-canvas-wrapper'> -->
-                    <canvas id='bh-canvas' class='simulation-canvas'></canvas>
-                <!-- </div> -->
-                <div id='bh-info-card' class='sw-info-card'>
-                    <div>
-                        <h3>Barnes-Hut</h3>
-                        <div class='sw-underline'></div>
-                    </div>
-                    <p>
-                        Simulating galaxies colliding with 1,000,000 stars using a
-                        hybrid CPU-GPU Barnes-Hut algorithm in real time
-                    </p>
+        <section id='barnes-hut'>
+            <canvas id='bh-canvas' class='simulation-canvas' oncontextmenu='return false;'></canvas>
+            <div id='bh-info-card' class='sw-info-card'>
+                <div>
+                    <h3>Barnes-Hut</h3>
+                    <div class='sw-underline'></div>
                 </div>
-            </section>
-            <section id='schrodinger'>
-                <!-- <div class='simulation-canvas-wrapper'> -->
-                    <canvas id='s-canvas' class='simulation-canvas'></canvas>
-                <!-- </div> -->
-                <div id='s-info-card' class='sw-info-card'>
-                    <div>
-                        <h3>Real-Time PDE Solver</h3>
-                        <div class='sw-underline'></div>
-                    </div>
-                    <p>
-                        Designed novel algorithm for GPU accelerated numeric solvers
-                        for PDEs (e.g. Schrödinger equation) to run on school
-                        and student laptops
-                    </p>
-                </div>
-            </section>
+                <p>
+                    Simulating galaxies colliding with 1,000,000 stars using a
+                    hybrid CPU-GPU Barnes-Hut algorithm in real time
+                </p>
+            </div>
         </section>
+        <section id='schrodinger'>
+            <canvas id='s-canvas' class='simulation-canvas' oncontextmenu='return false;'></canvas>
+            <div id='s-info-card' class='sw-info-card'>
+                <div>
+                    <h3>Real-Time PDE Solver</h3>
+                    <div class='sw-underline'></div>
+                </div>
+                <p>
+                    Designed novel algorithm for GPU accelerated numeric solvers
+                    for PDEs (e.g. Schrödinger equation) to run on school
+                    and student laptops
+                </p>
+            </div>
+        </section>
+    </section>
 
+    <div class='container'>
         <section id='portfolio'>
             <h2 class='header'>Portfolio</h2>
             <div id='p-wrapper'>
