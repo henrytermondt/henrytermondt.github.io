@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<!--
+Double Pendulum Fractal
+Finished: 5/29/23
+
+About:
+Completed in under a day!
+Loses energy as time goes on, but that can be practically removed by using an adaptive step RK4 solver.
+
+References:
+https://web.mit.edu/jorloff/www/chaosTalk/double-pendulum/double-pendulum-en.html (Has equations)
+https://mse.redwoods.edu/darnold/math55/DEproj/sp08/jaltic/presentation.pdf (Energy of a double pendulum)
+
+-->
+<head>
+    <style>
+        * {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        body {
+            background-color: gray;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            margin: auto;
+
+            /* transform: scale(0.5, -0.5); */
+
+            /* background-color: white; */
+        }
+
+        #canvas {
+            z-index: 10;
+        }
+
+        #log .sep {
+            width: calc(100% - 10px);
+            height: 1px;
+
+            background-color: rgb(160, 160, 160);
+        }
+
+        #log .info {
+            width: 100%;
+            display: inline-block;
+            white-space: break-spaces;
+        }
+
+        #log {
+            position: absolute;
+            top: 400px;
+
+            background-color: white;
+            padding: 4px 5px 5px 5px;
+
+            width: 500px;
+
+            overflow: scroll;
+
+            border-top: 2px solid rgb(160, 160, 160);
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id='canvas'></canvas>
+    <!--  -->
+    <script id='pendulum-source' type='glsl'>
+precision highp float;
+
+uniform sampler2D pendulums;
+uniform vec2 pendulumsDim;
+
+uniform float grav;
+uniform float timeStep;
+uniform float length;
+uniform float mass;
+
+const float pi = 3.14159265359;
+
+struct Point {
+    float theta;
+    float vel;
+};
+
+void main() {
+    vec4 ps = texture2D(pendulums, gl_FragCoord.xy / pendulumsDim);
+    Point point1 = Point(ps.x, ps.y);
+    Point point2 = Point(ps.z, ps.w);
+
+    point1.vel += timeStep * (-grav * (2.0 * mass + mass) * sin(point1.theta) - mass * grav * sin(point1.theta - 2.0 * point2.theta) - 2.0 * sin(point1.theta - point2.theta) * mass * (point2.vel * point2.vel * length + point1.vel * point1.vel * length * cos(point1.theta - point2.theta))) / (length * (2.0 * mass + mass - mass * cos(2.0 * point1.theta - 2.0 * point2.theta)));
+    point2.vel += timeStep * (2.0 * sin(point1.theta - point2.theta) * (point1.vel * point1.vel * length * (mass + mass) + grav * (mass + mass) * cos(point1.theta) + point2.vel * point2.vel * length * mass * cos(point1.theta - point2.theta))) / (length * (2.0 * mass + mass - mass * cos(2.0 * point1.theta - 2.0 * point2.theta)));
+    point1.theta += timeStep * point1.vel;
+    point2.theta += timeStep * point2.vel;
+
+    //point1.theta = mod(point1.theta, pi);
+    //point2.theta = mod(point2.theta, pi);
+    //if (point1.theta < 0.0) point1.theta = pi + point1.theta;
+    //if (point2.theta < 0.0) point2.theta = pi + point2.theta;
+
+    gl_FragColor = vec4(point1.theta, point1.vel, point2.theta, point2.vel);
+}
+
+        </script>
+        <script id='render-source' type='glsl'>
+precision highp float;
+
+uniform sampler2D pendulums;
+uniform vec2 pendulumsDim;
+
+const float pi = 3.14159265359;
+
+void main() {
+    vec4 ps = texture2D(pendulums, gl_FragCoord.xy / pendulumsDim);
+
+    float t1 = (sin(ps.x) + 1.0) / 2.0,
+        t2 = (sin(ps.z) + 1.0) / 2.0;
+
+    //vec4(t1 * 0.7 + 0.3, 0.5, t2 * 0.7 + 0.3, 1);
+    float val1 = t2 * 0.7 + 0.3;
+    float val2 = t1 * 0.2;
+
+    vec4 c = vec4(t1 * 0.7 + 0.3, 0.5, t2 * 0.7 + 0.3, 1);//vec4(val2 * (1.0 - val1) + val1, val2 * (1.0 - val1) + val1, val1 * (val2 * 0.2 + 0.8), 1);
+    float mag = length(c) / sqrt(3.0) * 0.99;
+
+
+    vec3 col1 = vec3(30, 183, 116) / 255.0 * 0.1;
+    vec3 col2 = vec3(11,84,148) / 255.0 * 0.8; // 78.0,112.0,93.0
+    vec3 col3 = vec3(183, 217, 211) / 255.0;
+
+    vec4 col = vec4(0, 0, 0, 0);
+
+    float threshold = 0.98;
+    if (mag < threshold) {
+        col = vec4(col1 + (col2 - col1) * mag * mag* mag, 1);
+    } else {
+        col = vec4(col2 + (col3 - col2) * ((mag - threshold) / (1.0 - threshold)), 1);
+    }
+    
+    gl_FragColor = col;
+    //vec4(t1 * 0.3 + 0.3, t2 * 0.4 + 0.4, t1 * t2 * 0.5 + 0.5, 1);//vec4(0.4, t1 * 0.2 + 0.6, t2 * 0.4 + 0.6, 1);
+}
+
+        </script>
+
+    <script src='https://cdn.jsdelivr.net/gh/staplecactus764/webgl-compute-shader@v1.0.3/main.js'></script>
+    <script>
+
+const canvas = document.getElementById('canvas'),
+    ctx = canvas.getContext('2d');
+const cgl = new ComputeShaderContext(),
+    glCanvas = cgl.canvas,
+    gl = cgl.context;
+
+glCanvas.id = 'gl-canvas';
+document.body.appendChild(glCanvas);
+
+const tau = Math.PI * 2,
+    qt = Math.PI / 2; // Quarter turn
+const width = window.innerWidth * 2,
+    height = window.innerHeight * 2;
+
+canvas.width = glCanvas.width = width;
+canvas.height = glCanvas.height = height;
+
+const fractal = !false;
+
+if (fractal) {
+ComputeShader.useContext(cgl);
+
+glCanvas.style.transform = `scale(0.5, -0.5) translate(${-width / 2}px, ${height / 2}px)`;//, 
+
+const minDim = width < height ? width : height;
+const scale = minDim * 0.002 / 670 / 4;
+
+const lerp = (a, b, t) => a + (b - a) * t;
+
+const data = new Float32Array(width * height * 4);
+for (let y = 0; y < height; y ++) {
+    for (let x = 0; x < width; x ++) {
+        const i = (y * width + x) * 4;
+        let fade = 0;
+        const dist = Math.sqrt((x - width / 2) * (x - width / 2) + (y - height / 2) * (y - height / 2));
+        if (dist > minDim * 0.25) fade = Math.pow(1.002, dist - minDim * 0.25) - 1;
+
+        // if (x / width < 0.1) fade = 1 - x / width * 10;
+        // if (x / width > 0.9) fade = 10 * (x / width - 0.9)
+        // if (y / height < 0.1) fade = 1 - y / height * 10;
+        // if (y / height > 0.9) fade = 10 * (y / height - 0.9)
+
+        data[i] = lerp((x - width / 2) * scale * 10, 0, fade);// * 0.1;
+        data[i + 1] = lerp(0.1, 0, fade);
+        data[i + 2] = lerp((y - height / 2) * scale * 10, 0, fade);// * 0.1;
+        data[i + 3] = lerp(-0.1, 0, fade);
+    }
+}
+
+
+const ps = new ComputeShaderInput('pendulums', data, width, height);
+const grav = new ComputeShaderUniform('grav', '1f', 0.1),
+    timeStep = new ComputeShaderUniform('timeStep', '1f', 0.3),
+    length = new ComputeShaderUniform('length', '1f', 10),
+    mass = new ComputeShaderUniform('mass', '1f', 5);
+
+const cs = new ComputeShader(document.getElementById('pendulum-source').textContent, width, height);
+cs.addInput(ps);
+cs.addUniform(grav);
+cs.addUniform(timeStep);
+cs.addUniform(length);
+cs.addUniform(mass);
+
+const render = new ComputeShader(document.getElementById('render-source').textContent, width, height);
+render.addInput(ps);
+
+function loop() {
+    cs.use();
+    cs.initializeInputs();
+    cs.initializeUniforms();
+    cs.run();
+    ComputeShader.swap(cs.output, ps);
+
+    render.use(true);
+    render.initializeInputs();
+    render.run();
+
+    window.requestAnimationFrame(loop);
+}
+loop();
+
+
+} else {
+    const grav = 0.3;
+    const point1 = {
+        theta: Math.PI,// + 0.1,
+        vel: 0.0001,
+        length: 100,
+        mass: 10,
+        kineticEnergy: 0,
+        potentialEnergy: 0,
+    };
+    const point2 = {
+        theta: Math.PI,
+        vel: 0,
+        length: 100,
+        mass: 10,
+        kineticEnergy: 0,
+        potentialEnergy: 0,
+    };
+
+    const maxEnergy = 2 * grav * (point1.mass * point1.length + point2.mass * (point1.length + point2.length));
+    // console.log(maxEnergy);
+
+    const quadratic = (a, b, c) => (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+
+    let loopID = 0;
+    function loop() {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, width, height);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+
+        point1.vel += (-grav * (2 * point1.mass + point2.mass) * Math.sin(point1.theta) - point2.mass * grav * Math.sin(point1.theta - 2 * point2.theta) - 2 * Math.sin(point1.theta - point2.theta) * point2.mass * (point2.vel * point2.vel * point2.length + point1.vel * point1.vel * point1.length * Math.cos(point1.theta - point2.theta))) / (point1.length * (2 * point1.mass + point2.mass - point2.mass * Math.cos(2 * point1.theta - 2 * point2.theta)))
+        point2.vel += (2 * Math.sin(point1.theta - point2.theta) * (point1.vel * point1.vel * point1.length * (point1.mass + point2.mass) + grav * (point1.mass + point2.mass) * Math.cos(point1.theta) + point2.vel * point2.vel * point2.length * point2.mass * Math.cos(point1.theta - point2.theta))) / (point2.length * (2 * point1.mass + point2.mass - point2.mass * Math.cos(2 * point1.theta - 2 * point2.theta)))
+        point1.theta += point1.vel;
+        point2.theta += point2.vel;
+        
+
+        // For whatever reason, implementations of double pendulums loose energy (even one that was from a professor). I have no idea why that is, but I've done some math to correct for it.
+        const p = point1.mass * grav * point1.length * (1 - Math.cos(point1.theta)) + point2.mass * grav * (point1.length * (1 - Math.cos(point1.theta)) + point2.length * (1 - Math.cos(point2.theta)));
+        const k = 0.5 * point1.mass * point1.vel * point1.vel * point1.length * point1.length + 0.5 * point2.mass * (point1.vel * point1.vel * point1.length * point1.length + point2.vel * point2.vel * point2.length * point2.length + 2 * point1.vel * point2.vel * point1.length * point2.length * Math.cos(point1.theta - point2.theta));
+        // console.log(p + k);
+
+        // let error = maxEnergy - (p + k); // How much energy has been lost?
+        // if (error > 0) {
+        //     point1.vel *= 1.001;
+        //     point2.vel *= 1.001;
+        // }
+
+        /*
+        k += error
+        Solve for v1 and v2
+        2k = v1^2(m1*l1^2 + m2*l1^2) + m2*v2^2*l2^2 + 2*m2*v1*v2*l1*l2*cos(t1 - t2)
+        0 = v1^2(m1*l1^2 + m2*l1^2) + v1*2*m2*v2*l1*l2*cos(t1 - t2) -(2k - m2*v2^2*l2^2)
+
+        a = m1*l1^2 + m2*l1^2
+        b = 2*m2*v2*l1*l2*cos(t1 - t2)
+        c = -2k + m2*v2^2*l2^2
+
+        v1 = (-b +- sqrt(b^2-4*a*c)) / (2*a)
+
+        0 = v1^2(m1*l1^2 + m2*l1^2) - 2k + m2*v2^2*l2^2 + 2*m2*v1*v2*l1*l2*cos(t1 - t2)
+        
+        a = m2*l2^2
+        b = 2*m2*v1*l1*l2*cos(t1 - t2)
+        c = v1^2(m1*l1^2 + m2*l1^2) - 2k
+
+        */
+        // console.log(p + k);
+        // console.log();
+
+        const x = width / 2 + Math.cos(point1.theta + qt) * point1.length,
+            y = height / 2 + Math.sin(point1.theta + qt) * point1.length;
+        ctx.beginPath();
+        ctx.moveTo(width / 2, height / 2);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.closePath();
+
+        const x2 = x + Math.cos(point2.theta + qt) * point2.length,
+            y2 = y + Math.sin(point2.theta + qt) * point2.length;    
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(x, y, 4 + point1.mass / 5, 0, tau);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(x2, y2, 4 + point2.mass / 5, 0, tau);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+        // console.log('hi');
+        loopID = window.requestAnimationFrame(loop);
+    }
+    loop();
+}
+
+
+    </script>
+</body>
+
+</html>
