@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Utility</title>
+
+    <style>
+        body {
+            margin: 25px;
+        }
+        .slide {
+            display: flex;
+            flex-direction: column;
+
+            width: 400px;
+            margin: 25px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id='list'></div>
+    <button onclick='makeExperience();'>Add Experience</button>
+    <button onclick='javascript: stringify();'>Stringify</button>
+    <div id='output'></div>
+
+    <script>
+
+const output = document.getElementById('output');
+
+let arr = [];
+
+const list = document.getElementById('list');
+const makeExperience = (t, d, ti, url) => {
+    const container = document.createElement('div');
+    container.className = 'slide';
+    
+    const title = document.createElement('input');
+    title.className = 'title';
+    title.type = 'text';
+    title.placeholder = 'Title';
+    if (t) title.value = t;
+    container.appendChild(title);
+
+    const description = document.createElement('input');
+    description.className = 'description';
+    description.type = 'text';
+    description.placeholder = 'Description';
+    if (d) description.value = d;
+    container.appendChild(description);
+
+    const time = document.createElement('input');
+    time.className = 'time';
+    time.type = 'text';
+    time.placeholder = 'Time';
+    if (ti) time.value = ti;
+    container.appendChild(time);
+
+    const image = document.createElement('input');
+    image.className = 'image';
+    image.type = 'text';
+    image.value = '/assets/experience-images/';
+    if (url) image.value = url;
+    container.appendChild(image);
+
+    const buttonContainer = document.createElement('div');
+    const up = document.createElement('button');
+    up.textContent = 'Up';
+    up.onclick = () => {
+        list.insertBefore(container, container.previousSibling);
+    };
+    buttonContainer.appendChild(up);
+
+    const down = document.createElement('button');
+    down.textContent = 'Down';
+    down.onclick = () => {
+        if (!container.nextSibling) return;
+        list.insertBefore(container.nextSibling, container);
+    };
+    buttonContainer.appendChild(down);
+    container.appendChild(buttonContainer);
+
+    list.appendChild(container);
+};
+
+const stringify = () => {
+    const experiences = [];
+
+    const pEls = document.querySelectorAll('.slide');
+    for (const p of pEls) {
+        experiences.push({
+            title: p.childNodes[0].value,
+            description: p.childNodes[1].value,
+            time: p.childNodes[2].value,
+            image: p.childNodes[3].value,
+        });
+    }
+
+    console.log(JSON.stringify(experiences));
+    output.textContent = JSON.stringify(experiences);
+};
+
+fetch('/assets/experience.json').then(result => {
+    result.json().then(result => {
+    for (const p of result) {
+        makeExperience(p.title, p.description, p.time, p.image);
+    }
+    }, () => console.log('Could not parse JSON')); // This should never happen
+}, reason => {
+    console.log('Could not fetch experience.json:', 'reason');
+})
+
+
+    </script>
+</body>
+</html>

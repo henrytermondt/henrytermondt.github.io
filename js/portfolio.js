@@ -52,9 +52,6 @@ const createInfoCard = obj => {
             duration: 0.1,
             onComplete: () => {
                 img.style.display = 'none';
-
-
-                console.log('complete');
             }
         });
     };
@@ -68,6 +65,7 @@ const createInfoCard = obj => {
         end: 'bottom top',
         onToggle: () => {
             if (!loaded) img.src = obj.image;
+            loaded = true;
         }
     });
 
@@ -79,9 +77,8 @@ fetch('/assets/portfolio.json').then(result => {
     result.json().then(result => {
         for (const p of result) {
             createInfoCard(p);
-            console.log(p);
         }
-    }, () => console.log('Could not parse JSON')); // This should never happen
+    }, () => console.error('Could not parse JSON')); // This should never happen
 }, reason => {
-    console.log('Could not fetch portfolio.json:', 'reason');
+    console.error('Could not fetch portfolio.json:', 'reason');
 })
