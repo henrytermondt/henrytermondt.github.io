@@ -21,7 +21,6 @@ const setHero = () => {
 
     const titleSize = (containerWidth - penroseWidth - 50 - 30 * 2) / titleScale;
     ts = titleSize + 'px';
-    // title.style.fontSize = titleSize + 'px';
 
     document.documentElement.style.setProperty('--ts', ts);
 
@@ -29,12 +28,6 @@ const setHero = () => {
     penroseHero.style.width = penroseWidth + 'px';
     penroseAccent.style.height = penroseWidth * 0.3 + 'px';
     penroseAccent.style.transform = `translateY(${penroseWidth * 0.25}px)`;
-
-    // Setting font sizes
-    // descriptionHero.style.fontSize = titleSize * 0.28 + 'px';
-    // for (const b of resumeButtons) {
-    //     b.style.fontSize = titleSize * 0.37 + 'px';
-    // }
 };
 
 const about = document.getElementById('about');
@@ -114,29 +107,6 @@ const revealMinimal = () => {
             loadAnimation?.pause?.();
         },
     });
-    // const descSplit = SplitText.create('#description', {
-    //     type: 'lines',
-    //     mask: 'lines',
-    // });
-    // gsap.from(descSplit.lines, {
-    //     y: '1em',
-    //     stagger: 0.05,
-    //     onComplete: () => {
-    //         descSplit.revert();
-    //     }
-    // });
-    // gsap.to('.resume-button', {
-    //     opacity: 1,
-    //     ease: 'linear',
-    //     delay: 0.2,
-    //     duration: 0.6,
-    // });
-    // gsap.from('.resume-button', {
-    //     y: 15,
-    //     delay: 0.2,
-    //     duration: 0.4,
-    //     ease: 'circ.out',
-    // });
 
     const scrollY = sessionStorage.getItem('scrollY');
     if (scrollY !== null) window.scrollTo(0, +scrollY);
@@ -168,31 +138,6 @@ const revealAll = () => {
             loading.style.pointerEvents = 'none';
         },
     });
-    // gsap.to('.resume-button', {
-    //     opacity: 1,
-    //     ease: 'linear',
-    //     delay: 0.2,
-    //     duration: 0.6,
-    // });
-    // gsap.from('.resume-button', {
-    //     y: 15,
-    //     delay: 0.2,
-    //     duration: 0.4,
-    //     ease: 'circ.out',
-    // });
-
-    // const descSplit = SplitText.create('#description', {
-    //     type: 'lines',
-    //     mask: 'lines',
-    // });
-    // gsap.from(descSplit.lines, {
-    //     y: 'calc(var(--ts) * 0.3)',
-    //     stagger: 0.05,
-    //     delay: 0.9,
-    //     onComplete: () => {
-    //         descSplit.revert();
-    //     }
-    // });
 
     sessionStorage.setItem('fullLoadAnimation', 'done');
 
@@ -250,55 +195,11 @@ const documentReady = new Promise((resolve) => {
     }
 });
 
-const animateAll = () => {
-    // const aboutSplit = SplitText.create('#about-text', {
-    //     type: 'lines',
-    //     mask: 'lines',
-    // });
-    // const aboutHeaderSplit = SplitText.create('.about-header', {
-    //     type: 'lines',
-    //     mask: 'lines',
-    // });
-
-    // const splitTL = gsap.timeline({
-    //     scrollTrigger: {
-    //         trigger: aboutLeft,
-    //         start: 'top bottom-=100px',
-    //         toggleActions: 'restart none none reverse',
-    //     },
-    // });
-    // splitTL.from(aboutSplit.lines, {
-    //     y: 35,
-    //     stagger: 0.05,
-    //     delay: 0.15,
-    //     onComplete: () => {
-    //         aboutSplit.revert();
-    //     }
-    // }, 0);
-    // splitTL.from(aboutHeaderSplit.lines, {
-    //     y: 100,
-    //     onComplete: () => {
-    //         aboutHeaderSplit.revert();
-    //     }    
-    // }, 0);
-    // splitTL.fromTo('#about-gradient', {
-    //     y: 15,
-    //     opacity: 0,
-    // }, {
-    //     y: 0,
-    //     opacity: 1,
-    //     duration: 0.3
-    // }, 0.9);
-};
-
 // If the penrose image is loaded, the DOM is ready, and the fonts are loaded, then display 
 let revealReady = false;
 Promise.all([penroseReady, documentReady, document.fonts.ready]).then((resolve, reject) => {
-    
     if (sessionStorage.getItem('fullLoadAnimation') === 'done') revealMinimal();
     else revealReady = true;
-
-    animateAll();
 });
 
 
@@ -311,7 +212,32 @@ window.onbeforeunload = e => {
 
 
 
+gsap.utils.toArray('.resume-button').forEach(el => {
+    console.log('el', el);
+    el.onmouseenter = () => {
+        console.log('hover');
+        gsap.to(el, {
+            backgroundImage: 'linear-gradient(134deg, #1fbd78, #0b5394)',
+            duration: 0.2,
+        });
 
+        gsap.to(el.firstElementChild, {
+            backgroundImage: 'linear-gradient(134deg, #FFFFFF, #FFFFFF)',
+            duration: 0.2,
+        });
+    };
+    el.onmouseleave = () => {
+        gsap.to(el, {
+            backgroundImage: 'linear-gradient(134deg, #FFFFFF00, #FFFFFF00)',
+            duration: 0.2,
+        });
+        console.log(el.firstElementChild);
+        gsap.to(el.firstElementChild, {
+            backgroundImage: 'linear-gradient(134deg, #1fbd78, #0b5394)',
+            duration: 0.2,
+        });
+    }
+});
 
 
 

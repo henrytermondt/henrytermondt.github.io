@@ -1,20 +1,8 @@
-/*
-<div class='p-info-card shadow'>
-    <div class='p-title'>Ray Tracing</div>
-    <div class='p-description'>
-        GPU-accelerated light modeling using industry standard techniques
-    </div>
-    <div class='p-accent'></div>
-</div>
-*/
-
-
-
-
 const infoCardWrapper = document.getElementById('p-info-card-wrapper'),
     thumbnailWrapper = document.getElementById('p-display-wrapper'),
     thumbnailEl = document.getElementById('p-display');
-const createInfoCard = obj => {
+let firstImg, firstContainer;
+const createInfoCard = (obj, first) => {
     const container = document.createElement('div');
     container.classList = 'p-info-card shadow';
 
@@ -37,7 +25,28 @@ const createInfoCard = obj => {
     img.classList = 'p-display shadow';
     thumbnailWrapper.appendChild(img);
 
+    if (first) {
+        firstContainer = container;
+        firstImg = img;
+        img.style.display = 'block';
+        img.style.opacity = 1;
+
+        container.style.transform = 'translate(15px, 0)';
+    }
+
     container.onmouseenter = e => {
+        firstContainer.removeAttribute('style');
+        if (img !== firstImg) {
+            gsap.to(firstImg, {
+                y: 5,
+                opacity: 0,
+                duration: 0.3,
+                onComplete: () => {
+                    firstImg.style.display = 'none';
+                }
+            });
+        }
+
         img.style.display = 'block';
         gsap.to(img, {
             y: 0,
@@ -58,7 +67,6 @@ const createInfoCard = obj => {
 
     // Lazily loads the images when they are visible
     let loaded = false;
-    // const img = new Image();
     ScrollTrigger.create({
         trigger: container,
         start: 'top bottom',
@@ -75,8 +83,8 @@ const createInfoCard = obj => {
 
 fetch('/assets/portfolio.json').then(result => {
     result.json().then(result => {
-        for (const p of result) {
-            createInfoCard(p);
+        for (let i = 0; i < result.length; i ++) {
+            createInfoCard(result[i], i === 0);
         }
     }, () => console.error('Could not parse JSON')); // This should never happen
 }, reason => {

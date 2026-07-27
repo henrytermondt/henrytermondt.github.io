@@ -127,6 +127,9 @@ p strong {
     font-family: 'Poppins', sans-serif;
 
     cursor: pointer;
+
+    transition-property: background-image;
+    transition-duration: 0.2s;
 }
 #hero .resume-button {
     width: 39%;
