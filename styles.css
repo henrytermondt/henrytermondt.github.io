@@ -149,7 +149,7 @@ p strong {
 #penrose-hero {
     margin: 30px 50px 0 30px;
 
-    background-image: url('/assets/penrose-variant.png');
+    /* background-image: url('/assets/penrose-variant.avif'); */
     background-position: center;
     background-size: cover;
 
@@ -689,7 +689,7 @@ iframe {
     height: 100%;
     max-width: 60vw;
 
-    background-image: url('/assets/penrose-variant.png');
+    background-image: url('/assets/penrose-variant.avif');
     background-size: cover;
     background-position: center;
 }

@@ -5,6 +5,14 @@ gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(SlowMo);
 
 
+const penroseHero = document.getElementById('penrose-hero'),
+    penroseAccent = document.getElementById('penrose-accent');
+
+
+
+
+
+
 
 const offscreenCanvas = new OffscreenCanvas(width, height)
     octx = offscreenCanvas.getContext('2d');
@@ -18,8 +26,6 @@ const containers = document.querySelectorAll('.container');
 const right = document.getElementById('right');
 const title = document.getElementById('title'),
     titleScale = 8.35;
-const penroseHero = document.getElementById('penrose-hero'),
-    penroseAccent = document.getElementById('penrose-accent');
 const descriptionHero = document.getElementById('description');
 
 const loading = document.getElementById('loading');
@@ -81,44 +87,56 @@ const revealAll = () => {
 };
 
 let repeats = 0;
-const loadAnimation = gsap.fromTo('.l-box', {y: 100}, {
-    y: -100,
-    stagger: 0.2,
-    repeat: -1,
-    ease: 'slow(0.01, 1, false)',
-    duration: 1,
-    onRepeat() {
-        if (revealed) return;
-
-        const override = (document.readyState === 'interactive' && ++repeats >= 2);
-        if (override) {
-            revealMinimal();
-            return;
-        }
-
-        if (sessionStorage.getItem('fullLoadAnimation') === 'done') return;
-
-        if (document.readyState === 'complete' || override) {
-            revealAll();
-        }
-    },
-})
-
-
+let loadAnimation = null;
 window.addEventListener('DOMContentLoaded', e => {
     document.getElementById('l-boxes').style.display = 'flex';
+    loadAnimation = gsap.fromTo('.l-box', {y: 100}, {
+        y: -100,
+        stagger: 0.2,
+        repeat: -1,
+        ease: 'slow(0.01, 1, false)',
+        duration: 1,
+        onRepeat() {
+            console.log('what');
+            if (revealed) return;
+
+            if (revealReady) {
+                revealAll();
+            }
+        },
+    })
 })
 
-window.addEventListener('load', e => {
-    if (revealed) return;
-    console.log('loaded');
 
-    console.log('in load', window.scrollY);
-    if (sessionStorage.getItem('fullLoadAnimation') === 'done' || (document.readyState === 'interactive' && repeats >= 2)) {
-        console.log('hi');
-        revealMinimal();
+
+const penroseImg = new Image();
+const penroseReady = new Promise((resolve, reject) => {
+    penroseImg.onload = () => {
+        penroseHero.style.backgroundImage = 'url("/assets/penrose-variant.avif")';
+        resolve();
+    };
+    penroseImg.onerror = () => {
+        reject();
+    };
+
+    penroseImg.src = '/assets/penrose-variant.avif';
+});
+
+const documentReady = new Promise((resolve) => {
+    if (document.readyState === 'interactive') {
+        resolve();
+    } else {
+        window.addEventListener('DOMContentLoaded', resolve);
     }
 });
+
+// If the penrose image is loaded, the DOM is ready, and the fonts are loaded, then display 
+let revealReady = false;
+Promise.all([penroseReady, documentReady, document.fonts.ready]).then((resolve, reject) => {
+    if (sessionStorage.getItem('fullLoadAnimation') === 'done') revealMinimal();
+    else revealReady = true;
+});
+
 
 window.onbeforeunload = e => {
     sessionStorage.setItem('scrollY', window.scrollY);

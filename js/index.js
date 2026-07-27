@@ -5,14 +5,6 @@ they simply represent what I thought looked best
 
 */
 
-// const lenis = new Lenis();
-// lenis.on('scroll', ScrollTrigger.update);
-// gsap.ticker.add((time) => {
-//   lenis.raf(time * 1000); 
-// });
-// gsap.ticker.lagSmoothing(0);
-
-
 
 
 const setHero = () => {
@@ -65,10 +57,6 @@ const resize = () => {
     width = window.innerWidth;
     height = window.innerHeight;
 
-    document.getElementById('about-separate').style.height = window.getComputedStyle(aboutLeft).height;
-};
-
-const loadSimulations = () => {
     setHero();
     setLorenz();
     lorenzIframe.contentWindow.postMessage('resize');
@@ -77,6 +65,12 @@ const loadSimulations = () => {
     setS();
 
     ScrollTrigger.refresh();
+
+    document.getElementById('about-separate').style.height = window.getComputedStyle(aboutLeft).height;
+};
+
+const loadSimulations = () => {
+    
     // lorenzIframe.contentWindow.postMessage('play');
 };
 window.onmessage = message => {
@@ -88,9 +82,10 @@ window.onmessage = message => {
 
 window.onresize = resize;
 
-resize();
+window.addEventListener('DOMContentLoaded', resize);
 window.onload = () => {
-    loadSimulations();
+    setBH();
+    setS();
 };
 
 // for (let i = 0; i < 4; i ++) {
