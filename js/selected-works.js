@@ -18,6 +18,7 @@ const setBH = () => {
     bhCanvas.width = width;
     bhCanvas.height = height;
 
+    console.log(bhFrames[bhPosition.frame].src);
     bhctx.drawImage(bhFrames[bhPosition.frame], (width - 800) / 2, (height - 800) / 2);
 };
 const setS = () => {
@@ -82,7 +83,6 @@ gsap.to(sPosition, {
 
 
 const selectedWorksWrapper = document.getElementById('sw-header-wrapper');
-console.log(selectedWorksWrapper);
 
 const fadeTL = gsap.timeline({
     scrollTrigger: {

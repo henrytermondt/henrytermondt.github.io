@@ -1,32 +1,3 @@
-/*
-    <div class='slide'>
-        <div class='slide-image' style='background-image: url("/assets/campolindo-orchestra.avif"); background-position: bottom 0% left 0%;'></div>
-        <div class='slide-text'>
-            <div class='slide-title'>Assistant Concertmaster</div>
-            <div class='slide-time'>2025-2026</div>
-            <div class='slide-description'>
-                Led the 1st violin section and orchestra of 50+ students
-                when the concertmaster was absent. Worked to promote a
-                collaborative atmosp-here and called attention to bullying.
-            </div>
-            <div class='slide-accent'></div>
-        </div>
-    </div>
-    */
-
-    /*
-<div class='p-info-card shadow'>
-    <div class='p-title'>Ray Tracing</div>
-    <div class='p-description'>
-        GPU-accelerated light modeling using industry standard techniques
-    </div>
-    <div class='p-accent'></div>
-</div>
-*/
-
-
-
-
 const carousel = document.getElementById('carousel');
 const createSlide = obj => {
     const container = document.createElement('div');
@@ -81,7 +52,6 @@ fetch('/assets/experience.json').then(result => {
     result.json().then(result => {
         for (const p of result) {
             createSlide(p);
-            console.log(p);
         }
     }, () => console.log('Could not parse JSON')); // This should never happen
 }, reason => {

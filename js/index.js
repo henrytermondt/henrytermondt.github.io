@@ -14,23 +14,7 @@ they simply represent what I thought looked best
 
 
 
-const heroAspectRatio = 13/6.9,//1.529,
-    penroseAspectRatio = 0.785;
 
-
-
-const offscreenCanvas = new OffscreenCanvas(width, height)
-    octx = offscreenCanvas.getContext('2d');
-
-const resumeButtons = document.querySelectorAll('.resume-button');
-
-const containers = document.querySelectorAll('.container');
-const right = document.getElementById('right');
-const title = document.getElementById('title'),
-    titleScale = 8.35;
-const penroseHero = document.getElementById('penrose-hero'),
-    penroseAccent = document.getElementById('penrose-accent');
-const descriptionHero = document.getElementById('description');
 const setHero = () => {
     let containerWidth = width / heroAspectRatio < height ? width : height * heroAspectRatio;
     for (const container of containers) {
@@ -81,6 +65,10 @@ const resize = () => {
     width = window.innerWidth;
     height = window.innerHeight;
 
+    document.getElementById('about-separate').style.height = window.getComputedStyle(aboutLeft).height;
+};
+
+const loadSimulations = () => {
     setHero();
     setLorenz();
     lorenzIframe.contentWindow.postMessage('resize');
@@ -89,12 +77,6 @@ const resize = () => {
     setS();
 
     ScrollTrigger.refresh();
-
-    document.getElementById('about-separate').style.height = window.getComputedStyle(aboutLeft).height;
-};
-
-const loadSimulations = () => {
-    
     // lorenzIframe.contentWindow.postMessage('play');
 };
 window.onmessage = message => {
@@ -106,8 +88,8 @@ window.onmessage = message => {
 
 window.onresize = resize;
 
+resize();
 window.onload = () => {
-    resize();
     loadSimulations();
 };
 
