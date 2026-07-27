@@ -252,18 +252,23 @@ h2 {
 }
 
 #about-left {
-    max-width: 500px;
-    text-align: justify;
+    width: 500px;
+    /* text-align: justify; */
 
     margin: 50px 0;
 }
 
-#about p {
+#about-text, #about-text * {
     font-size: 20px;
-    text-indent: 2em;
+    /* text-align: justify !important; */
+    /* text-indent: 2em; */
     margin: 0;
 }
-#about-gradient-with {
+.indent {
+    display: inline-block;
+    width: 50px;
+}
+#about-gradient {
     width: 50%;
     height: 5px;
     margin-top: 25px;
