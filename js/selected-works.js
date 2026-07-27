@@ -80,9 +80,7 @@ gsap.to(sPosition, {
 
 
 
-
 const selectedWorksWrapper = document.getElementById('sw-header-wrapper');
-
 const fadeTL = gsap.timeline({
     scrollTrigger: {
         trigger: selectedWorksWrapper,
@@ -92,7 +90,7 @@ const fadeTL = gsap.timeline({
         // end: 'bottom top'
     },
     ease: 'none',
-    duration: 0.3,
+    duration: 3,
 });
 fadeTL.to(selectedWorksWrapper, {
     backgroundColor: 'black',
@@ -109,11 +107,5 @@ fadeTL.to('#sw-color-padding-before', { // Transparent, but with starting values
 fadeTL.to('#sw-color-padding', {
     backgroundImage: 'linear-gradient(#FFFFFF00 50%, #00000000 100%)',
 }, 0);
-// fadeTL.to(selectedWorksWrapper, {
-//     backgroundColor: 'black',
-//     duration: 0.3,
-// });
-// gsap.to();
-
 
 

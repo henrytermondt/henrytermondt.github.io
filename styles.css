@@ -152,7 +152,6 @@ p strong {
 #penrose-hero {
     margin: 30px 50px 0 30px;
 
-    /* background-image: url('/assets/penrose-variant.avif'); */
     background-position: center;
     background-size: cover;
 
@@ -197,6 +196,35 @@ p strong {
     /* Goes above loading screen */
     z-index: 4;
 }
+
+@media (width < 1000px) {
+    #right {
+        height: calc(var(--ts) * 7);
+        margin-right: 30px;
+        margin-left: 50px;
+        margin-bottom: calc((100px - var(--ts)) * 3);
+        margin-top: calc((100px - var(--ts)) * 3);
+    }
+    #hero .resume-button {
+        width: 39%;
+        height: 16%;
+    }
+
+    #description {
+       anchor-name: --description; 
+    }
+    #penrose-accent {
+        position-anchor: --description;
+        top: anchor(top);
+        left: calc(anchor(right));
+        width: 6px;
+        transform: translateY(0%) !important;
+    }
+    #info-container {
+        font-size: calc(var(--ts) * 0.35);
+    }
+}
+
 
 nav {
     position: absolute;
@@ -256,16 +284,17 @@ h2 {
 
 #about-left {
     width: 500px;
-    /* text-align: justify; */
+    color: var(--dark);
 
     margin: 50px 0;
 }
 
-#about-text, #about-text * {
+#about-text {
     font-size: 20px;
-    /* text-align: justify !important; */
-    /* text-indent: 2em; */
-    margin: 0;
+    font-weight: 300;
+}
+#about-text strong {
+    font-weight: 500;
 }
 .indent {
     display: inline-block;
@@ -531,6 +560,20 @@ iframe {
     transform: translateY(5px);
     /* var(--light-background); */
 }
+
+@media (width < 850px) {
+    #p-display-wrapper {
+        display: none;
+    }
+    #p-info-card-wrapper {
+        width: 100%;
+    }
+    .p-info-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
 
 
 

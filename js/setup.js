@@ -17,17 +17,30 @@ const setHero = () => {
         container.style.left = (width - containerWidth) * 0.5 + 'px';
     }
 
-    const penroseWidth = containerWidth * 5 / 13;
+    if (width >= 1000) {
+        penroseHero.style.display = 'block';
+        const penroseWidth = containerWidth * 5 / 13;
 
-    const titleSize = (containerWidth - penroseWidth - 50 - 30 * 2) / titleScale;
-    ts = titleSize + 'px';
+        const titleSize = (containerWidth - penroseWidth - 50 - 30 * 2) / titleScale;
+        ts = titleSize + 'px';
 
-    document.documentElement.style.setProperty('--ts', ts);
+        document.documentElement.style.setProperty('--ts', ts);
 
-    // Penrose positioning
-    penroseHero.style.width = penroseWidth + 'px';
-    penroseAccent.style.height = penroseWidth * 0.3 + 'px';
-    penroseAccent.style.transform = `translateY(${penroseWidth * 0.25}px)`;
+        // Penrose positioning
+        penroseHero.style.width = penroseWidth + 'px';
+        penroseAccent.style.height = penroseWidth * 0.3 + 'px';
+        penroseAccent.style.transform = `translateY(${penroseWidth * 0.25}px)`;
+    } else {
+        penroseHero.style.display = 'none';
+
+        const titleSize = (containerWidth - 50 - 30 * 2) / titleScale;
+        ts = titleSize + 'px';
+
+        document.documentElement.style.setProperty('--ts', ts);
+
+        penroseAccent.style.height = titleSize * 4.7 * 0.35  + 'px';
+        // penroseAccent.style.transform = `translateY(${titleSize * 1.3}px)`;
+    }
 };
 
 const about = document.getElementById('about');
@@ -62,6 +75,8 @@ const resize = () => {
     setS();
 
     ScrollTrigger.refresh();
+
+    selectFirstInfoCard();
 
     document.getElementById('about-separate').style.height = window.getComputedStyle(aboutLeft).height;
 };
@@ -213,9 +228,7 @@ window.onbeforeunload = e => {
 
 
 gsap.utils.toArray('.resume-button').forEach(el => {
-    console.log('el', el);
     el.onmouseenter = () => {
-        console.log('hover');
         gsap.to(el, {
             backgroundImage: 'linear-gradient(134deg, #1fbd78, #0b5394)',
             duration: 0.2,
@@ -231,24 +244,9 @@ gsap.utils.toArray('.resume-button').forEach(el => {
             backgroundImage: 'linear-gradient(134deg, #FFFFFF00, #FFFFFF00)',
             duration: 0.2,
         });
-        console.log(el.firstElementChild);
         gsap.to(el.firstElementChild, {
             backgroundImage: 'linear-gradient(134deg, #1fbd78, #0b5394)',
             duration: 0.2,
         });
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-

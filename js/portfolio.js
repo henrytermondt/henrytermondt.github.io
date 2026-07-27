@@ -1,7 +1,7 @@
 const infoCardWrapper = document.getElementById('p-info-card-wrapper'),
     thumbnailWrapper = document.getElementById('p-display-wrapper'),
     thumbnailEl = document.getElementById('p-display');
-let firstImg, firstContainer;
+let firstImg, firstContainer, firstSet = true;
 const createInfoCard = (obj, first) => {
     const container = document.createElement('div');
     container.classList = 'p-info-card shadow';
@@ -31,10 +31,13 @@ const createInfoCard = (obj, first) => {
         img.style.display = 'block';
         img.style.opacity = 1;
 
-        container.style.transform = 'translate(15px, 0)';
+        // container.style.transform = 'translate(15px, 0)';
     }
 
+    let stage = null; // Holds the current stage (showing or hiding)
     container.onmouseenter = e => {
+        firstSet = false;
+
         firstContainer.removeAttribute('style');
         if (img !== firstImg) {
             gsap.to(firstImg, {
@@ -52,6 +55,9 @@ const createInfoCard = (obj, first) => {
             y: 0,
             opacity: 1,
             duration: 0.1,
+            onStart: () => {
+                stage = 'show';
+            },
         });
     };
     container.onmouseleave = e => {
@@ -59,7 +65,11 @@ const createInfoCard = (obj, first) => {
             y: 5,
             opacity: 0,
             duration: 0.1,
-            onComplete: () => {
+            onStart: () => {
+                stage = 'hide';
+            },
+            onComplete: () => { // Can sometimes trigger if got interrupted before completing
+                if (stage !== 'hide') return; // If it got interrupted, don't hide
                 img.style.display = 'none';
             }
         });
@@ -80,12 +90,22 @@ const createInfoCard = (obj, first) => {
     infoCardWrapper.appendChild(container);
 };
 
+const selectFirstInfoCard = () => {
+    if (!firstSet || !firstContainer) return;
+
+    if (width < 1000) firstContainer.removeAttribute('style');
+    else firstContainer.style.transform = 'translate(15px, 0)';
+    console.log(width, 'hey');
+};
+
 
 fetch('/assets/portfolio.json').then(result => {
     result.json().then(result => {
         for (let i = 0; i < result.length; i ++) {
             createInfoCard(result[i], i === 0);
         }
+
+        selectFirstInfoCard();
     }, () => console.error('Could not parse JSON')); // This should never happen
 }, reason => {
     console.error('Could not fetch portfolio.json:', 'reason');
