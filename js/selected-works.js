@@ -90,7 +90,7 @@ const fadeTL = gsap.timeline({
         // end: 'bottom top'
     },
     ease: 'none',
-    duration: 3,
+    duration: 0.3,
 });
 fadeTL.to(selectedWorksWrapper, {
     backgroundColor: 'black',
