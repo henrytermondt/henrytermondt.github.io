@@ -2,30 +2,35 @@
 <html lang='en'>
 <head>
     <meta charset='UTF-8'>
-    <!-- <meta name='keywords' content='quantum, quantum mechanics, schrodinger equation, education, simulation'>
-    <meta name='description' content='An intuitive simulation of quantum mechanics and the Schrödinger equation for students and teachers'> -->
+    <meta name='keywords' content='Henry Termondt, personal website, simulation, portfolio'>
+    <meta name='description' content="Henry Termondt's personal website">
     <meta name='author' content='Henry Termondt'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
     <title>Henry Termondt</title>
 
-    <!-- <meta property='og:title' content='Psilab'>
+    <meta property='og:title' content='Henry Termondt'>
     <meta property='og:type' content='website'>
     <meta property='og:locale' content='en_US'>
-    <meta property='og:url' content='https://henrytermondt.github.io/Psilab/'>
-    <meta property='og:description' content='An intuitive simulation of quantum mechanics and the Schrödinger equation for students and teachers'>
-    <meta property='og:image' content='https://henrytermondt.github.io/Psilab/logo.png'> -->
+    <meta property='og:url' content='https://henrytermondt.github.io/'>
+    <meta property='og:description' content="Henry Termondt's personal website">
+    <meta property='og:image' content='/assets/og-logo.webp'>
+
+    <meta name='twitter:card' content='summary_large_image'>
+    <meta name='twitter:title' content='Henry Termondt'>
+    <meta name='twitter:description' content="Henry Termondt's personal website">
+    <meta name='twitter:image' content='https://yourdomain.com/og-logo.webp'>
 
     <link rel='preconnect' href='https://fonts.googleapis.com'>
     <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
     <link rel='preload' as='style' href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'>
     <link href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap' rel='stylesheet'>
-    <!-- <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.25/dist/lenis.css"> -->
     
     <link rel='preload' href='/assets/penrose-variant.avif' as='image' fetchpriority='high'>
-    <!-- <link rel='icon' type='image/png' href='/Psilab/favicon.ico'/> -->
+    
     <link rel='stylesheet' href='/styles.css'>
 
+    <link rel='canonical' href='https://henrytermondt.github.io/'>
     <link rel='icon' href='/favicon.ico'>
 </head>
 <body>
@@ -64,11 +69,6 @@
                 <h2 id='about-separate' class='header about-header'>About Me</h2>
                 <div id='about-left'>
                     <h2 id='about-with' class='header about-header'>About</h2>
-                    <!-- <div id='about-text'>
-                            <span class='indent'></span>As a part of Rice University’s class of 2030, I’m studying <strong>CS</strong> and planning on minoring in Computational and Applied Mathematics as well as Physics. I’m especially interested in <strong>parallel computing</strong> and its application in <strong>science</strong>.<br>
-                            <span class='indent'></span>I build simulations and visualizations in WebGL/GLSL and JavaScript, and I’m transitioning to Rust, C++, and CUDA. I also have experience with Python and Java.<br>
-                            <span class='indent'></span>For fun, I enjoy playing violin and folding origami. I also find tutoring and helping others extremely rewarding.<br>
-                    </div> -->
                     <div id='about-text'>
                         <p>
                             As a part of Rice University’s class of 2030, I’m studying
@@ -265,8 +265,8 @@
     
     <script src='https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/ScrollTrigger.min.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/EasePack.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/gsap@3.15/dist/EasePack.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js'></script>
 
     <script src='/js/setup.js'></script>
     <script src='/js/selected-works.js'></script>
@@ -274,5 +274,19 @@
     <script src='/js/experience.js'></script>
     <script src='/js/nav.js'></script>
     <script src='/js/index.js'></script>
+
+    <script type='application/ld+json'>
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Henry Termondt",
+  "url": "https://henrytermondt.github.io",
+  "sameAs": [
+    "https://github.com/henrytermondt",
+    "https://www.linkedin.com/in/henry-termondt-b19254301/",
+  ],
+  "knowsAbout": ["Computational Science", "GPGPU", "WebGL", "Rice University", "JavaScript", "Simulations"]
+}
+    </script>
 </body>
 </html>
