@@ -43,8 +43,6 @@ const createInfoCard = (obj, first) => {
         firstImg = img;
         img.style.display = 'block';
         img.style.opacity = 1;
-
-        // container.style.transform = 'translate(15px, 0)';
     }
 
     container.onclick = () => {
