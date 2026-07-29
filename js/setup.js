@@ -1,5 +1,5 @@
-let width = document.documentElement.clientWidth,
-    height = document.documentElement.clientHeight;
+let width = window.innerWidth,
+    height = window.innerHeight;
 let smallMargin = width < 500 ? 12 : 25,
     largeMargin = width < 500 ? 25 : 50;
 
@@ -13,7 +13,6 @@ const penroseHero = document.getElementById('penrose-hero'),
 
 let ts;
 const setHero = () => {
-    console.log(width, width / heroAspectRatio, height, height * heroAspectRatio);
     let containerWidth = width / heroAspectRatio < height ? width : height * heroAspectRatio;
     for (const container of containers) {
         container.style.width = containerWidth + 'px';
@@ -36,14 +35,12 @@ const setHero = () => {
     } else {
         penroseHero.style.display = 'none';
 
-        console.log(largeMargin, smallMargin);
-        const titleSize = (containerWidth - largeMargin - (smallMargin + 20) * 2) / titleScale;
+        const titleSize = (containerWidth - largeMargin - 30) / titleScale;
         ts = titleSize + 'px';
 
         document.documentElement.style.setProperty('--ts', ts);
 
         penroseAccent.style.height = titleSize * 4.7 * 0.35  + 'px';
-        // penroseAccent.style.transform = `translateY(${titleSize * 1.3}px)`;
     }
 };
 
@@ -65,27 +62,22 @@ const setLorenz = () => {
     if (width <= 1000) {
         lorenzAnchor.style.height = +referenceHeight.slice(0, -2) * 0.8 + 'px';
     }
-    if (width <= 500) {
-        lorenzAnchor.style.height = +referenceHeight.slice(0, -2) * 0.5 + 'px';
-    }
 };
 
 const resize = () => {
-    width = document.documentElement.clientWidth;
-    height = document.documentElement.clientHeight;
+    width = window.innerWidth;
+    height = window.innerHeight;
 
     smallMargin = width < 500 ? 12 : 25;
     largeMargin = width < 500 ? 25 : 50;
 
     fullSlideWidth = 350 + 100 + 20;
     if (width - (largeMargin) * 2 < 350) 
-        fullSlideWidth = width - 10 * 2 + largeMargin; //calc(100vw - var(--large-margin) * 2), 350px);
-    
-    // console.log();
+        fullSlideWidth = width - 10 * 2 + largeMargin;
 
     setHero();
     setLorenz();
-    lorenzIframe.contentWindow.postMessage('resize');
+    lorenzIframe.contentWindow.postMessage(width <= 1400 ? 'resize' : 'resize large');
 
     setBH();
     setS();
@@ -94,13 +86,14 @@ const resize = () => {
 
     selectFirstInfoCard();
 
+    if (!fullNavOpen) {
+        gsap.set('#full-nav', {
+            x: '101vw',
+        });
+    }
+
     document.getElementById('about-separate').style.height = window.getComputedStyle(aboutLeft).height;
 };
-
-
-
-
-
 
 
 const offscreenCanvas = new OffscreenCanvas(width, height)
@@ -141,7 +134,6 @@ const revealMinimal = () => {
 
     const scrollY = sessionStorage.getItem('scrollY');
     if (scrollY !== null) window.scrollTo(0, +scrollY);
-    // else gsap.set('nav', {y: -48});
 
     revealed = true;
 };
@@ -240,10 +232,6 @@ window.onbeforeunload = e => {
 };
 
 
-
-
-
-
 gsap.utils.toArray('.resume-button').forEach(el => {
     el.onmouseenter = () => {
         gsap.to(el, {
@@ -267,15 +255,3 @@ gsap.utils.toArray('.resume-button').forEach(el => {
         });
     }
 });
-
-
-
-
-window.setTimeout(() => {
-    // for (const el of document.querySelectorAll('*')) {
-    //     const style = getComputedStyle(el)
-    //     if (+style.width.slice(0, -2) + +style.left.slice(0, -2) >= 998)
-    //         console.log(+style.width.slice(0, -2) + +style.left.slice(0, -2), el);
-    // }
-    console.log(getComputedStyle(lorenzIframe).width, getComputedStyle(lorenzIframe).left);
-}, 2000);

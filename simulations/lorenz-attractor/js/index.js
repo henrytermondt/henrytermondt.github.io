@@ -97,7 +97,7 @@ const main = async () => {
         gl.uniformMatrix4fv(uProjection, false, ppm);
         gl.uniformMatrix4fv(uView, false, lookAt);
 
-        let scale = window.innerWidth < 400 ? window.innerWidth / 400 : 1;
+        let scale = window.innerWidth < 400 && !large ? window.innerWidth / 400 : 1;
         gl.uniform4fv(uScale, [scale, scale, 1, 1]);
 
         gl.drawArrays(gl.TRIANGLES, 0, fullPositions.length / 3);
@@ -108,16 +108,21 @@ const main = async () => {
 
         if (!paused) window.requestAnimationFrame(render);
     };
-    console.log('lorenz', window.innerWidth, window.innerHeight)
 
+    let large = false;
     window.onmessage = message => {
         switch (message.data) {
             case 'resize':
-                console.log('lorenz', window.innerWidth, window.innerHeight)
-                let dim = Math.min(window.innerWidth, window.innerHeight);
-
                 glCanvas.width = window.innerWidth;
                 glCanvas.height = window.innerHeight;
+
+                large = false;
+            break;
+            case 'resize large':
+                glCanvas.width = window.innerWidth;
+                glCanvas.height = window.innerHeight;
+
+                large = true;
             break;
             case 'play':
                 paused = false;

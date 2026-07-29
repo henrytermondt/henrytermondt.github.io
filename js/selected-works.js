@@ -92,8 +92,6 @@ const fadeTL = gsap.timeline({
         trigger: selectedWorksWrapper,
         start: 'top top',
         toggleActions: 'restart none none reverse',
-        // markers: true,
-        // end: 'bottom top'
     },
     ease: 'none',
     duration: 0.3,

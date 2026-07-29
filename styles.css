@@ -217,7 +217,8 @@ p strong {
     #right {
         height: calc(var(--ts) * 7);
         margin-right: 30px;
-        margin-left: var(--large-margin);
+        margin-left: 35px;
+        /* margin-left: var(--large-margin); */
         margin-bottom: calc((100px - var(--ts)) * 3);
         margin-top: calc((100px - var(--ts)) * 3);
     }
@@ -331,7 +332,7 @@ nav img {
 
     transform: translateX(50px);
 }
-@media (width < 730px) {
+@media (width < 820px) {
     .hamburger-menu {
         display: block;
     }
@@ -401,6 +402,13 @@ h2 {
 #about-text {
     font-size: 20px;
     font-weight: 300;
+
+    text-align: justify;
+}
+#about p {
+    font-size: 20px;
+    text-indent: 2em;
+    margin: 0;
 }
 #about-text strong {
     font-weight: 500;
@@ -923,12 +931,6 @@ iframe {
     background-image: url('/assets/penrose-variant.avif');
     background-size: cover;
     background-position: center;
-}
-
-@media (width <= 750px) {
-    /* #c-penrose-wrapper {
-        display: none;
-    } */
 }
 @media (width <= 550px) {
     #contact .header {
