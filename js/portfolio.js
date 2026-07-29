@@ -90,17 +90,8 @@ const createInfoCard = (obj, first) => {
         });
     };
 
-    // Lazily loads the images when they are visible
-    let loaded = false;
-    ScrollTrigger.create({
-        trigger: container,
-        start: 'top bottom',
-        end: 'bottom top',
-        onToggle: () => {
-            if (!loaded) img.src = obj.image;
-            loaded = true;
-        }
-    });
+    img.loading = 'lazy';
+    img.src = obj.image;
 
     infoCardWrapper.appendChild(container);
 };
