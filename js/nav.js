@@ -1,14 +1,18 @@
 let navDown = false;
-window.addEventListener('wheel', e => {
+let pScrollY = 0;
+window.addEventListener('scroll', e => {
+    const deltaY = window.scrollY - pScrollY;
+    pScrollY = window.scrollY;
+
     if (fullNavOpen) return;
 
-    if (e.deltaY > 0 && navDown || window.scrollY < 200) {
+    if (deltaY > 0 && navDown || window.scrollY < 200) {
         navDown = false;
         gsap.to('nav', {
             y: -48,
             duration: 0.1,
         });
-    } else if (e.deltaY < 0 && !navDown) {
+    } else if (deltaY < 0 && !navDown) {
         navDown = true;
         gsap.to('nav', {
             y: 0,
