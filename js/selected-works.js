@@ -18,13 +18,17 @@ const setBH = () => {
     bhCanvas.width = width;
     bhCanvas.height = height;
 
-    bhctx.drawImage(bhFrames[bhPosition.frame], (width - 800) / 2, (height - 800) / 2);
+    const size = width < 800 ? width : 800;
+
+    bhctx.drawImage(bhFrames[bhPosition.frame], (width - size) / 2, (height - size) / 2, size, size);
 };
 const setS = () => {
     sCanvas.width = width;
     sCanvas.height = height;
 
-    sctx.drawImage(sFrames[sPosition.frame], (width - 800) / 2, (height - 800) / 2);
+    const size = width < 800 ? width : 800;
+
+    sctx.drawImage(sFrames[sPosition.frame], (width - size) / 2, (height - size) / 2, size, size);
 };
 
 const bhFrames = [];
@@ -59,7 +63,8 @@ gsap.to(bhPosition, {
         scrub: 1,
     },
     onUpdate(self) {
-        bhctx.drawImage(bhFrames[bhPosition.frame], (width - 800) / 2, (height - 800) / 2);
+        const size = width < 800 ? width : 800;
+        bhctx.drawImage(bhFrames[bhPosition.frame], (width - size) / 2, (height - size) / 2, size, size);
     }
 });
 gsap.to(sPosition, {
@@ -73,7 +78,8 @@ gsap.to(sPosition, {
         scrub: 1,
     },
     onUpdate(self) {
-        sctx.drawImage(sFrames[sPosition.frame], (width - 800) / 2, (height - 800) / 2);
+        const size = width < 800 ? width : 800;
+        sctx.drawImage(sFrames[sPosition.frame], (width - size) / 2, (height - size) / 2, size, size);
     }
 });
 
@@ -107,5 +113,3 @@ fadeTL.to('#sw-color-padding-before', { // Transparent, but with starting values
 fadeTL.to('#sw-color-padding', {
     backgroundImage: 'linear-gradient(#FFFFFF00 50%, #00000000 100%)',
 }, 0);
-
-

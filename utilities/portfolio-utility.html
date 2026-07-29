@@ -31,7 +31,7 @@ const output = document.getElementById('output');
 let arr = [];
 
 const list = document.getElementById('list');
-const makeProject = (t, d, url) => {
+const makeProject = (t, d, url, l, g) => {
     const container = document.createElement('div');
     container.className = 'project';
     
@@ -55,6 +55,20 @@ const makeProject = (t, d, url) => {
     image.value = '/assets/project-thumbnails/';
     if (url) image.value = url;
     container.appendChild(image);
+
+    const link = document.createElement('input');
+    link.className = 'link';
+    link.type = 'text';
+    link.placeholder = 'Link';
+    if (l) link.value = l;
+    container.appendChild(link);
+
+    const githubLink = document.createElement('input');
+    githubLink.className = 'github-link';
+    githubLink.type = 'text';
+    githubLink.placeholder = 'Github Link';
+    if (g) githubLink.value = g;
+    container.appendChild(githubLink);
 
     const buttonContainer = document.createElement('div');
     const up = document.createElement('button');
@@ -86,6 +100,8 @@ const stringify = () => {
             title: p.childNodes[0].value,
             description: p.childNodes[1].value,
             image: p.childNodes[2].value,
+            link: p.childNodes[3].value,
+            githubLink: p.childNodes[4].value,
         });
     }
 
@@ -96,7 +112,7 @@ const stringify = () => {
 fetch('/assets/portfolio.json').then(result => {
     result.json().then(result => {
     for (const p of result) {
-        makeProject(p.title, p.description, p.image);
+        makeProject(p.title, p.description, p.image, p.link, p.githubLink);
     }
     }, () => console.log('Could not parse JSON')); // This should never happen
 }, reason => {

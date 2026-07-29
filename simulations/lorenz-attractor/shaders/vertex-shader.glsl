@@ -5,8 +5,9 @@ varying float vAges;
 
 uniform mat4 projection;
 uniform mat4 view;
+uniform vec4 scale;
 
 void main() {
     vAges = aAges;
-    gl_Position = projection * view * vec4(aPos, 1);
+    gl_Position = projection * view * vec4(aPos, 1) * scale;
 }

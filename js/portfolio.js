@@ -16,6 +16,19 @@ const createInfoCard = (obj, first) => {
     description.textContent = obj.description;
     container.appendChild(description);
 
+    const githubLink = document.createElement('a');
+    githubLink.classList = 'github-link';
+    githubLink.href = obj.githubLink;
+    githubLink.target = '_blank';
+    githubLink.onclick = e => e.stopPropagation();
+    githubLink.title = 'View code on Github';
+    container.appendChild(githubLink);
+
+    const githubImg = document.createElement('img');
+    githubImg.src = '/assets/github.svg';
+    githubLink.appendChild(githubImg);
+    
+
     const accent = document.createElement('div');
     accent.className = 'p-accent';
     container.appendChild(accent);
@@ -34,6 +47,10 @@ const createInfoCard = (obj, first) => {
         // container.style.transform = 'translate(15px, 0)';
     }
 
+    container.onclick = () => {
+        window.open(obj.link, 'blank');
+    };
+    
     let stage = null; // Holds the current stage (showing or hiding)
     container.onmouseenter = e => {
         firstSet = false;
@@ -95,7 +112,6 @@ const selectFirstInfoCard = () => {
 
     if (width < 1000) firstContainer.removeAttribute('style');
     else firstContainer.style.transform = 'translate(15px, 0)';
-    console.log(width, 'hey');
 };
 
 

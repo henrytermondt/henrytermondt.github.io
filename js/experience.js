@@ -57,7 +57,7 @@ fetch('/assets/experience.json').then(result => {
 
 
 // Button logic
-const fullSlideWidth = 350 + 100 + 20;
+let fullSlideWidth = 350 + 100 + 20;
 const slideLeft = () => {
     carousel.scrollBy({
         left: -fullSlideWidth,

@@ -1,5 +1,7 @@
-let width = window.innerWidth,
-    height = window.innerHeight;
+let width = document.documentElement.clientWidth,
+    height = document.documentElement.clientHeight;
+let smallMargin = width < 500 ? 12 : 25,
+    largeMargin = width < 500 ? 25 : 50;
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(SlowMo);
@@ -11,6 +13,7 @@ const penroseHero = document.getElementById('penrose-hero'),
 
 let ts;
 const setHero = () => {
+    console.log(width, width / heroAspectRatio, height, height * heroAspectRatio);
     let containerWidth = width / heroAspectRatio < height ? width : height * heroAspectRatio;
     for (const container of containers) {
         container.style.width = containerWidth + 'px';
@@ -21,7 +24,7 @@ const setHero = () => {
         penroseHero.style.display = 'block';
         const penroseWidth = containerWidth * 5 / 13;
 
-        const titleSize = (containerWidth - penroseWidth - 50 - 30 * 2) / titleScale;
+        const titleSize = (containerWidth - penroseWidth - largeMargin - (smallMargin + 5) * 2) / titleScale;
         ts = titleSize + 'px';
 
         document.documentElement.style.setProperty('--ts', ts);
@@ -33,7 +36,8 @@ const setHero = () => {
     } else {
         penroseHero.style.display = 'none';
 
-        const titleSize = (containerWidth - 50 - 30 * 2) / titleScale;
+        console.log(largeMargin, smallMargin);
+        const titleSize = (containerWidth - largeMargin - (smallMargin + 20) * 2) / titleScale;
         ts = titleSize + 'px';
 
         document.documentElement.style.setProperty('--ts', ts);
@@ -61,11 +65,23 @@ const setLorenz = () => {
     if (width <= 1000) {
         lorenzAnchor.style.height = +referenceHeight.slice(0, -2) * 0.8 + 'px';
     }
+    if (width <= 500) {
+        lorenzAnchor.style.height = +referenceHeight.slice(0, -2) * 0.5 + 'px';
+    }
 };
 
 const resize = () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
+    width = document.documentElement.clientWidth;
+    height = document.documentElement.clientHeight;
+
+    smallMargin = width < 500 ? 12 : 25;
+    largeMargin = width < 500 ? 25 : 50;
+
+    fullSlideWidth = 350 + 100 + 20;
+    if (width - (largeMargin) * 2 < 350) 
+        fullSlideWidth = width - 10 * 2 + largeMargin; //calc(100vw - var(--large-margin) * 2), 350px);
+    
+    // console.log();
 
     setHero();
     setLorenz();
@@ -125,6 +141,7 @@ const revealMinimal = () => {
 
     const scrollY = sessionStorage.getItem('scrollY');
     if (scrollY !== null) window.scrollTo(0, +scrollY);
+    // else gsap.set('nav', {y: -48});
 
     revealed = true;
 };
@@ -250,3 +267,15 @@ gsap.utils.toArray('.resume-button').forEach(el => {
         });
     }
 });
+
+
+
+
+window.setTimeout(() => {
+    // for (const el of document.querySelectorAll('*')) {
+    //     const style = getComputedStyle(el)
+    //     if (+style.width.slice(0, -2) + +style.left.slice(0, -2) >= 998)
+    //         console.log(+style.width.slice(0, -2) + +style.left.slice(0, -2), el);
+    // }
+    console.log(getComputedStyle(lorenzIframe).width, getComputedStyle(lorenzIframe).left);
+}, 2000);

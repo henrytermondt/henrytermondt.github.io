@@ -5,7 +5,7 @@
     <!-- <meta name='keywords' content='quantum, quantum mechanics, schrodinger equation, education, simulation'>
     <meta name='description' content='An intuitive simulation of quantum mechanics and the Schrödinger equation for students and teachers'> -->
     <meta name='author' content='Henry Termondt'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
     <title>Henry Termondt</title>
 
@@ -48,13 +48,15 @@
                 <h1 id='title'>Henry Termondt</h1>
             </div>
 
-            <nav>
-                <a class='nav-link' href='#about'>About Me</a> |
-                <a class='nav-link' href='#selected-works'>Selected Works</a> |
-                <a class='nav-link' href='#portfolio'>Portfolio</a> |
-                <a class='nav-link' href='#experience'>Experience</a> |
+            
+            <div id='hero-nav'>
+                <a class='nav-link' href='#about'>About</a>
+                <a class='nav-link' href='#selected-works'>Selected Works</a>
+                <a class='nav-link' href='#portfolio'>Portfolio</a>
+                <a class='nav-link' href='#experience'>Experience</a>
                 <a class='nav-link' href='#contact'>Contact</a>
-            </nav>
+                <img class='hamburger-menu' src='/assets/hamburger-menu.svg' onclick='openNav();'>
+            </div>
         </section>
 
         <section id='about'>
@@ -102,7 +104,7 @@
     </div>
     
     <section id='selected-works'>
-        <div>
+        <div id='sw-padding-wrapper'>
             <!-- Color wrappers exist to make the transition look smooth before an after the header -->
             <div id='sw-color-padding-before'></div>
             <div id='sw-header-wrapper'>
@@ -118,12 +120,22 @@
             <canvas id='bh-canvas' class='simulation-canvas' oncontextmenu='return false;'></canvas>
             <div id='bh-info-card' class='sw-info-card'>
                 <div>
-                    <h3>Barnes-Hut</h3>
-                    <div class='sw-underline'></div>
+                    <a class='external-link' href='https://henrytermondt.github.io/barnes-hut/' title='View project in browser' aria-label='View project in browser' target='_blank'>
+                        <div>
+                            <h3>Barnes-Hut</h3>
+                            
+                            <div class='sw-underline'></div>
+                        </div>
+                        <img id='bh-link-img' src='/assets/external-link.svg'>
+                    </a>
                 </div>
+                
                 <p>
                     Simulating galaxies colliding with 1,000,000 stars using a
                     hybrid CPU-GPU Barnes-Hut algorithm in real time
+                    <a class='github-link' href='https://github.com/henrytermondt/barnes-hut/' title='View code on Github' aria-label='View code on Github' target='_blank'>
+                        <img src='/assets/github.svg'>
+                    </a>
                 </p>
             </div>
         </section>
@@ -131,13 +143,22 @@
             <canvas id='s-canvas' class='simulation-canvas' oncontextmenu='return false;'></canvas>
             <div id='s-info-card' class='sw-info-card'>
                 <div>
-                    <h3>Real-Time PDE Solver</h3>
-                    <div class='sw-underline'></div>
+                    <a class='external-link' href='https://henrytermondt.github.io/optimizing-PDEs/' title='View project in browser' aria-label='View project in browser' target='_blank'>
+                        <img id='s-link-img' src='/assets/external-link.svg'>
+                        <div>
+                            <h3>Real-Time PDE Solver</h3>
+                            
+                            <div class='sw-underline'></div>
+                        </div>
+                    </a>
                 </div>
                 <p>
                     Designed novel algorithm for GPU accelerated numeric solvers
                     for PDEs (e.g. Schrödinger equation) to run on school
                     and student laptops
+                    <a class='github-link' href='https://github.com/henrytermondt/optimizing-PDEs' title='View code on Github' aria-label='View code on Github' target='_blank'>
+                        <img src='/assets/github.svg'>
+                    </a>
                 </p>
             </div>
         </section>
@@ -215,6 +236,28 @@
         </div>
     </footer>
 
+    <nav>
+        <img src='/assets/logo-black.svg'>
+        <div id='nav-links'>
+            <a class='nav-link' href='#top'>Top</a>
+            <a class='nav-link' href='#about'>About</a>
+            <a class='nav-link' href='#selected-works'>Selected Works</a>
+            <a class='nav-link' href='#portfolio'>Portfolio</a>
+            <a class='nav-link' href='#experience'>Experience</a>
+            <a class='nav-link' href='#contact'>Contact</a>
+            <img class='hamburger-menu' src='/assets/hamburger-menu.svg' onclick='openNav();'>
+            <img class='x' src='/assets/x.svg' onclick='closeNav();'>
+        </div>
+    </nav>
+    <div id='full-nav'>
+        <a class='nav-link' href='#top' onclick='closeNav();'>Top</a>
+        <a class='nav-link' href='#about' onclick='closeNav();'>About</a>
+        <a class='nav-link' href='#selected-works' onclick='closeNav();'>Selected Works</a>
+        <a class='nav-link' href='#portfolio' onclick='closeNav();'>Portfolio</a>
+        <a class='nav-link' href='#experience' onclick='closeNav();'>Experience</a>
+        <a class='nav-link' href='#contact' onclick='closeNav();'>Contact</a>
+    </div>
+
     <div id='loading'>
         <div id='l-text'>Loading</div>
         <div id='l-boxes'>
@@ -236,6 +279,7 @@
     <script src='/js/selected-works.js'></script>
     <script src='/js/portfolio.js'></script>
     <script src='/js/experience.js'></script>
+    <script src='/js/nav.js'></script>
     <script src='/js/index.js'></script>
 </body>
 </html>

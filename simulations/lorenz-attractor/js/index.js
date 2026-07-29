@@ -15,7 +15,8 @@ const main = async () => {
     const aPos = gl.getAttribLocation(program, 'aPos'),
         aAges = gl.getAttribLocation(program, 'aAges'),
         uView = gl.getUniformLocation(program, 'view'),
-        uProjection = gl.getUniformLocation(program, 'projection');
+        uProjection = gl.getUniformLocation(program, 'projection'),
+        uScale = gl.getUniformLocation(program, 'scale');
 
 
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
@@ -33,6 +34,13 @@ const main = async () => {
         const fullPositions = [];
         for (let i = 0; i < numNodes; i ++) fullPositions.push(...positions[i]);
         
+        // for (let i = 0; i < fullPositions.length / 3; i ++) {
+        //     const index = i * 3;
+        //     fullPositions[index + 0] *= 0.5;
+        //     fullPositions[index + 2] *= 0.5;
+        // }
+
+
         // Binds position attribute
         const posBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
@@ -89,6 +97,9 @@ const main = async () => {
         gl.uniformMatrix4fv(uProjection, false, ppm);
         gl.uniformMatrix4fv(uView, false, lookAt);
 
+        let scale = window.innerWidth < 400 ? window.innerWidth / 400 : 1;
+        gl.uniform4fv(uScale, [scale, scale, 1, 1]);
+
         gl.drawArrays(gl.TRIANGLES, 0, fullPositions.length / 3);
         
         dt = t - pt;
@@ -97,10 +108,14 @@ const main = async () => {
 
         if (!paused) window.requestAnimationFrame(render);
     };
+    console.log('lorenz', window.innerWidth, window.innerHeight)
 
     window.onmessage = message => {
         switch (message.data) {
             case 'resize':
+                console.log('lorenz', window.innerWidth, window.innerHeight)
+                let dim = Math.min(window.innerWidth, window.innerHeight);
+
                 glCanvas.width = window.innerWidth;
                 glCanvas.height = window.innerHeight;
             break;
