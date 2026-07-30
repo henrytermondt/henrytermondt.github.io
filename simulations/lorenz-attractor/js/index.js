@@ -104,6 +104,7 @@ const main = async () => {
 
     let large = false;
     window.onmessage = message => {
+        console.log(message);
         switch (message.data) {
             case 'resize':
                 glCanvas.width = window.innerWidth;
@@ -114,6 +115,8 @@ const main = async () => {
             case 'resize large':
                 glCanvas.width = window.innerWidth;
                 glCanvas.height = window.innerHeight;
+
+                console.log('large');
 
                 large = true;
             break;
