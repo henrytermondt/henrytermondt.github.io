@@ -284,7 +284,7 @@ nav img {
     cursor: pointer;
 }
 .hamburger-menu {
-    display: none;
+    display: none !important;
 }
 #hero .hamburger-menu {
     filter: brightness(9%);
@@ -335,7 +335,7 @@ nav img {
 }
 @media (width < 820px) {
     .hamburger-menu {
-        display: block;
+        display: block !important;
     }
     .nav-link:not(#full-nav .nav-link) {
         display: none;
@@ -491,7 +491,7 @@ iframe {
 #selected-works {
     position: relative;
 
-    z-index: 1;
+    z-index: 2;
 
     /* padding-bottom: 100px; */
 
@@ -503,7 +503,7 @@ iframe {
     left: 0;
     top: 0;
 
-    z-index: 2;
+    z-index: 3;
 }
 #sw-header-wrapper {
     position: relative;
@@ -526,7 +526,7 @@ iframe {
 
     pointer-events: none;
 
-    z-index: 2;
+    z-index: 3;
 }
 #sw-color-padding {
     position: absolute;
@@ -536,7 +536,7 @@ iframe {
 
     pointer-events: none;
 
-    z-index: 2;
+    z-index: 3;
 }
 
 #sw-header {

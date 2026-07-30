@@ -98,4 +98,3 @@ navTL.to('nav img', {
 navTL.to('nav', {
     borderColor: 'rgb(55, 55, 55)',
 }, 0);
-
