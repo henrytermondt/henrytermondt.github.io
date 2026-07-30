@@ -9,7 +9,7 @@ const maxVerts = 400;
 
 
 const glCanvas = document.getElementById('canvas'),
-    gl = glCanvas.getContext('webgl', {alpha: true, premultipliedAlpha: false});
+    gl = glCanvas.getContext('webgl', {alpha: true, premultipliedAlpha: true});
 
 // Draw transparency
 gl.enable(gl.BLEND)

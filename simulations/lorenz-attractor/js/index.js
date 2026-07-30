@@ -79,7 +79,7 @@ const main = async () => {
 
 
         // Clears screen
-        gl.clearColor(1, 1, 1, 0);
+        gl.clearColor(0.97, 0.97, 0.97, 1);
         gl.clear(gl.COLOR_BUFFER_BIT);
         
         // Creates perspective projection matrix
