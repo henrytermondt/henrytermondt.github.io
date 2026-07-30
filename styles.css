@@ -108,6 +108,10 @@ html, body {
     position: relative;
 }
 
+#container1 {
+    z-index: 0;
+}
+
 /* Allows penrose and right side to be positioned as such */
 #hero {
     display: flex;
@@ -156,7 +160,6 @@ p strong {
     width: 39%;
     height: 12%;
 }
-
 
 .gradient-text {
     width: fit-content;
@@ -418,7 +421,7 @@ h2 {
 
     background-image: linear-gradient(to right, var(--dark-blue), var(--middle-blue));
 
-    z-index: 2;
+    /* z-index: 2; */
 }
 
 #lorenz-anchor {

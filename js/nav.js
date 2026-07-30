@@ -1,12 +1,12 @@
 let navDown = false;
-let pScrollY = 0;
-window.addEventListener('scroll', e => {
-    const deltaY = window.scrollY - pScrollY;
-    pScrollY = window.scrollY;
+let pScrollTop = 0;
+viewport.addEventListener('scroll', e => {
+    const deltaY = viewport.scrollTop - pScrollTop;
+    pScrollTop = viewport.scrollTop;
 
     if (fullNavOpen) return;
 
-    if (deltaY > 0 && navDown || window.scrollY < 200) {
+    if (deltaY > 0 && navDown || viewport.scrollTop < 200) {
         navDown = false;
         gsap.to('nav', {
             y: -48,
