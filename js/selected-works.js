@@ -59,6 +59,7 @@ gsap.to(bhPosition, {
         trigger: bhCanvas,
         start: 'top top',
         end: 'bottom top',
+        pinType: 'fixed',
         pin: true,
         scrub: 1,
     },
@@ -74,6 +75,7 @@ gsap.to(sPosition, {
         trigger: sCanvas,
         start: 'top top',
         end: 'bottom top',
+        pinType: 'fixed',
         pin: true,
         scrub: 1,
     },
@@ -111,3 +113,4 @@ fadeTL.to('#sw-color-padding-before', { // Transparent, but with starting values
 fadeTL.to('#sw-color-padding', {
     backgroundImage: 'linear-gradient(#FFFFFF00 50%, #00000000 100%)',
 }, 0);
+

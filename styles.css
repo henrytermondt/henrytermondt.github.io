@@ -18,8 +18,6 @@
 
     --small-margin: 25px;
     --large-margin: 50px;
-
-    scrollbar-gutter: stable;
 }
 @media (width < 600px) {
     :root {
@@ -35,6 +33,21 @@ body {
 
     font-family: 'Poppins', sans-serif;
 }
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+#viewport {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
+    
+    /* scrollbar-gutter: stable; */
+}
+
 .no-scroll {
     overflow: hidden !important;
 }
@@ -304,7 +317,6 @@ nav img {
     font-size: 50px;
     font-weight: 200;
     text-decoration: none;
-    /* text-decoration-line: underline; */
     text-decoration-thickness: 2px;
 
     width: max-content;
@@ -346,6 +358,8 @@ nav img {
     padding: 0 calc(var(--ts) * 0.4);
 
     background-color: var(--light-background);
+
+    z-index: 0;
 }
 #about-horizontal-wrapper {
     display: flex;
@@ -374,6 +388,8 @@ h2 {
     color: var(--dark);
 
     margin: 50px 0;
+
+    z-index: 2;
 }
 
 #about-text {
@@ -476,11 +492,19 @@ iframe {
 #selected-works {
     position: relative;
 
+    z-index: 1;
+
+    /* padding-bottom: 100px; */
+
     /* Gives the bottom corners a curve */
     clip-path: rect(-60vh 100% 100% 0 round 0 0 clamp(50px, 30vw, 200px) clamp(50px, 30vw, 200px));
 }
 #sw-padding-wrapper {
     position: relative;
+    left: 0;
+    top: 0;
+
+    z-index: 2;
 }
 #sw-header-wrapper {
     position: relative;
@@ -496,7 +520,10 @@ iframe {
     width: 100%;
     height: 60vh;
     top: -60vh;
+    left: 0;
     background-image: none;
+
+    
 
     pointer-events: none;
 
@@ -509,7 +536,6 @@ iframe {
     background-image: linear-gradient(#FFFFFF 50%, #FFFFFF00 100%);
 
     pointer-events: none;
-
 
     z-index: 2;
 }
@@ -535,12 +561,18 @@ iframe {
 
     background-color: black;
     left: 0;
-
     margin: 0;
-
     width: 100%;
+    
+    touch-action: pan-y;
 
     color: white !important;
+}
+.pin-spacer {
+    pointer-events: none;
+}
+#schrodinger {
+    margin-bottom: 100px;
 }
 .sw-info-card {
     position: absolute;
@@ -598,6 +630,12 @@ iframe {
 #s-link-img {
     right: calc(anchor(left) + 10px);
 }
+@media (height < 500px) {
+    #schrodinger {
+        padding-bottom: 100px;
+    }
+}
+
 
 
 .github-link {
@@ -715,6 +753,9 @@ iframe {
 #experience .header {
     margin: 50px var(--large-margin);
 }
+#carousel-wrapper {
+    position: relative;
+}
 #carousel {
     display: flex;
     flex-direction: row;
@@ -739,6 +780,7 @@ iframe {
     transition-duration: 0.1s;
 
     margin: 0 var(--large-margin);
+    margin-bottom: 50px;
 }
 .slide:hover {
     box-shadow: 0px 2px 4px var(--dark-shadow);
@@ -784,7 +826,9 @@ iframe {
 }
 #e-button-wrapper {
     position: absolute;
+    /* top: 0; */
     right: 50px;
+    bottom: 0;
 
     display: flex;
 }

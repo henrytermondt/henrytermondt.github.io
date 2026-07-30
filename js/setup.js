@@ -7,6 +7,15 @@ gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(SlowMo);
 gsap.registerPlugin(SplitText);
 
+ScrollTrigger.defaults({
+  scroller: '#viewport'
+});
+
+ScrollTrigger.config({
+  ignoreMobileResize: true
+});
+
+const viewport = document.getElementById('viewport');
 
 const penroseHero = document.getElementById('penrose-hero'),
     penroseAccent = document.getElementById('penrose-accent');
@@ -133,7 +142,7 @@ const revealMinimal = () => {
     });
 
     const scrollY = sessionStorage.getItem('scrollY');
-    if (scrollY !== null) window.scrollTo(0, +scrollY);
+    if (scrollY !== null) viewport.scrollTo(0, +scrollY);
 
     revealed = true;
 };
@@ -228,7 +237,7 @@ Promise.all([penroseReady, documentReady, document.fonts.ready]).then((resolve, 
 
 
 window.onbeforeunload = e => {
-    sessionStorage.setItem('scrollY', window.scrollY);
+    sessionStorage.setItem('scrollY', viewport.scrollTop);
 };
 
 

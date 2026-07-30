@@ -34,233 +34,235 @@
     <link rel='icon' href='/favicon.ico'>
 </head>
 <body>
-    <div class='container'>
-        <section id='hero'>
-            <div id='penrose-hero' class='shadow'></div>
-            <div id='penrose-accent'></div>
+    <div id='viewport'>
+        <div class='container'>
+            <section id='hero'>
+                <div id='penrose-hero' class='shadow'></div>
+                <div id='penrose-accent'></div>
 
-            <div id='right'>
-                <div id='info-container'>
-                    <p id='description'>
-                        I’m an undergrad at Rice University majoring<br>
-                        in CS with a passion for <strong>high performance<br>
-                        computing</strong> and <strong>scientific computing</strong>
-                    </p>
-                    <button class='resume-button shadow' onclick='window.open("/assets/Henry Termondt Resume.pdf", "_blank");'>
-                        <span class='gradient-text'>View Resume</span>
-                    </button>
+                <div id='right'>
+                    <div id='info-container'>
+                        <p id='description'>
+                            I’m an undergrad at Rice University majoring<br>
+                            in CS with a passion for <strong>high performance<br>
+                            computing</strong> and <strong>scientific computing</strong>
+                        </p>
+                        <button class='resume-button shadow' onclick='window.open("/assets/Henry Termondt Resume.pdf", "_blank");'>
+                            <span class='gradient-text'>View Resume</span>
+                        </button>
+                    </div>
+                    <h1 id='title'>Henry Termondt</h1>
                 </div>
-                <h1 id='title'>Henry Termondt</h1>
+
+                
+                <div id='hero-nav'>
+                    <a class='nav-link' href='#about'>About</a>
+                    <a class='nav-link' href='#selected-works'>Selected Works</a>
+                    <a class='nav-link' href='#portfolio'>Portfolio</a>
+                    <a class='nav-link' href='#experience'>Experience</a>
+                    <a class='nav-link' href='#contact'>Contact</a>
+                    <img class='hamburger-menu' src='/assets/hamburger-menu.svg' onclick='openNav();'>
+                </div>
+            </section>
+
+            <section id='about'>
+                <div id='about-horizontal-wrapper'>
+                    <h2 id='about-separate' class='header about-header'>About Me</h2>
+                    <div id='about-left'>
+                        <h2 id='about-with' class='header about-header'>About</h2>
+                        <div id='about-text'>
+                            <p>
+                                As a part of Rice University’s class of 2030, I’m studying
+                                <strong>CS</strong> and planning on minoring in Computational and Applied
+                                Mathematics as well as Physics. I’m especially interested
+                                in <strong>parallel computing</strong> and its application in <strong>science</strong>.
+                            </p>
+                            <p>
+                                I build simulations and visualizations in WebGL/GLSL and
+                                JavaScript, and I’m transitioning to Rust, C++, and CUDA.
+                                I also have experience with Python and Java.
+                            </p>
+                            <p>
+                                For fun, I enjoy playing violin and folding origami. I
+                                also find tutoring and helping others extremely rewarding.
+                            </p>
+                        </div>
+                        <div id='about-gradient'></div>
+                    </div>
+                    <div id='lorenz-anchor'></div>
+                    <iframe id='lorenz-attractor'
+                        title='Lorenz Attractor Simulation'
+                        allowtransparency='true'
+                        src='/simulations/lorenz-attractor/index.html'>
+                    </iframe>
+                </div>
+            </section>
+        </div>
+        
+        <section id='selected-works'>
+            <div id='sw-padding-wrapper'>
+                <!-- Color wrappers exist to make the transition look smooth before an after the header -->
+                <div id='sw-color-padding-before'></div>
+                <div id='sw-header-wrapper'>
+                    <div>
+                        <h2 id='sw-header'>Selected Works</h2>
+                        <div id='sw-header-underline'></div>
+                    </div>
+                </div>
+                <div id='sw-color-padding'></div>
             </div>
 
-            
-            <div id='hero-nav'>
+            <section id='barnes-hut'>
+                <canvas id='bh-canvas' class='simulation-canvas' oncontextmenu='return false;'></canvas>
+                <div id='bh-info-card' class='sw-info-card'>
+                    <div>
+                        <a class='external-link' href='https://henrytermondt.github.io/barnes-hut/' title='View project in browser' aria-label='View project in browser' target='_blank'>
+                            <div>
+                                <h3>Barnes-Hut</h3>
+                                
+                                <div class='sw-underline'></div>
+                            </div>
+                            <img id='bh-link-img' src='/assets/external-link.svg'>
+                        </a>
+                    </div>
+                    
+                    <p>
+                        Simulating galaxies colliding with 1,000,000 stars using a
+                        hybrid CPU-GPU Barnes-Hut algorithm in real time
+                        <a class='github-link' href='https://github.com/henrytermondt/barnes-hut/' title='View code on Github' aria-label='View code on Github' target='_blank'>
+                            <img src='/assets/github.svg'>
+                        </a>
+                    </p>
+                </div>
+            </section>
+            <section id='schrodinger'>
+                <canvas id='s-canvas' class='simulation-canvas' oncontextmenu='return false;'></canvas>
+                <div id='s-info-card' class='sw-info-card'>
+                    <div>
+                        <a class='external-link' href='https://henrytermondt.github.io/optimizing-PDEs/' title='View project in browser' aria-label='View project in browser' target='_blank'>
+                            <img id='s-link-img' src='/assets/external-link.svg'>
+                            <div>
+                                <h3>Real-Time PDE Solver</h3>
+                                
+                                <div class='sw-underline'></div>
+                            </div>
+                        </a>
+                    </div>
+                    <p>
+                        Designed novel algorithm for GPU accelerated numeric solvers
+                        for PDEs (e.g. Schrödinger equation) to run on school
+                        and student laptops
+                        <a class='github-link' href='https://github.com/henrytermondt/optimizing-PDEs' title='View code on Github' aria-label='View code on Github' target='_blank'>
+                            <img src='/assets/github.svg'>
+                        </a>
+                    </p>
+                </div>
+            </section>
+        </section>
+
+        <div class='container'>
+            <section id='portfolio'>
+                <h2 class='header'>Portfolio</h2>
+                <div id='p-wrapper'>
+                    <!-- Dynamically populated with content -->
+                    <div id='p-info-card-wrapper'></div>
+                    <div id='p-display-wrapper'></div>
+                </div>
+            </section>
+
+            <section id='experience'>
+                <h2 class='header'>Experience</h2>
+            </section>
+        </div>
+
+        <div id='carousel-wrapper'>
+            <!-- Dynamically populated with slides -->
+            <div id='carousel'></div>
+            <div id='e-button-wrapper'>
+                <button class='shadow' onclick='slideLeft();'>
+                    <img src='/assets/left-arrow.svg'>
+                </button>
+                <button class='shadow' onclick='slideRight();'>
+                    <img src='/assets/right-arrow.svg'>
+                </button>
+            </div>
+        </div>
+
+        <div class='container'>
+            <section id='contact'>
+                <div id='c-wrapper'>
+                    <h2 class='header'>Get in Touch</h2>
+                    <div id='c-links'>
+                        <button class='resume-button shadow' onclick='window.open("/assets/Henry Termondt Resume.pdf", "_blank");'>
+                            <span class='gradient-text'>View Resume</span>
+                        </button>
+                        <div id='github' class='link-container'>
+                            <img class='logo' src='/assets/github.svg'>
+                            <a href='https://github.com/henrytermondt' target='_blank'>Github</a>
+                        </div>
+                        <div id='linkedin' class='link-container'>
+                            <img class='logo' src='/assets/linkedin.png'>
+                            <a href='https://www.linkedin.com/in/henry-termondt-b19254301/' target='_blank'>LinkedIn</a>
+                        </div>
+                        <div id='email' class='link-container'>
+                            <img class='logo' src='/assets/email.svg'>
+                            <a href='mailto:henry.termondt@gmail.com' target='_blank'>henry.termondt@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Replace penrose tiling with footer -->
+                <div id='c-penrose-wrapper'>
+                    <div id='c-penrose' class='shadow'></div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <div id='f-links'>
+                <strong>Navigation</strong>
+                <a href='#top'>Top</a>
+                <a href='#about'>About</a>
+                <a href='#selected-works'>Selected Works</a>
+                <a href='#portfolio'>Portfolio</a>
+                <a href='#experience'>Experience</a>
+                <a href='#contact'>Contact</a>
+            </div>
+            <div id='logo-wrapper'>
+                <img src='/assets/logo.svg'>
+            </div>
+        </footer>
+
+        <nav>
+            <img src='/assets/logo-black.svg'>
+            <div id='nav-links'>
+                <a class='nav-link' href='#top'>Top</a>
                 <a class='nav-link' href='#about'>About</a>
                 <a class='nav-link' href='#selected-works'>Selected Works</a>
                 <a class='nav-link' href='#portfolio'>Portfolio</a>
                 <a class='nav-link' href='#experience'>Experience</a>
                 <a class='nav-link' href='#contact'>Contact</a>
                 <img class='hamburger-menu' src='/assets/hamburger-menu.svg' onclick='openNav();'>
+                <img class='x' src='/assets/x.svg' onclick='closeNav();'>
             </div>
-        </section>
-
-        <section id='about'>
-            <div id='about-horizontal-wrapper'>
-                <h2 id='about-separate' class='header about-header'>About Me</h2>
-                <div id='about-left'>
-                    <h2 id='about-with' class='header about-header'>About</h2>
-                    <div id='about-text'>
-                        <p>
-                            As a part of Rice University’s class of 2030, I’m studying
-                            <strong>CS</strong> and planning on minoring in Computational and Applied
-                            Mathematics as well as Physics. I’m especially interested
-                            in <strong>parallel computing</strong> and its application in <strong>science</strong>.
-                        </p>
-                        <p>
-                            I build simulations and visualizations in WebGL/GLSL and
-                            JavaScript, and I’m transitioning to Rust, C++, and CUDA.
-                            I also have experience with Python and Java.
-                        </p>
-                        <p>
-                            For fun, I enjoy playing violin and folding origami. I
-                            also find tutoring and helping others extremely rewarding.
-                        </p>
-                    </div>
-                    <div id='about-gradient'></div>
-                </div>
-                <div id='lorenz-anchor'></div>
-                <iframe id='lorenz-attractor'
-                    title='Lorenz Attractor Simulation'
-                    allowtransparency='true'
-                    src='/simulations/lorenz-attractor/index.html'>
-                </iframe>
-            </div>
-        </section>
-    </div>
-    
-    <section id='selected-works'>
-        <div id='sw-padding-wrapper'>
-            <!-- Color wrappers exist to make the transition look smooth before an after the header -->
-            <div id='sw-color-padding-before'></div>
-            <div id='sw-header-wrapper'>
-                <div>
-                    <h2 id='sw-header'>Selected Works</h2>
-                    <div id='sw-header-underline'></div>
-                </div>
-            </div>
-            <div id='sw-color-padding'></div>
+        </nav>
+        <div id='full-nav'>
+            <a class='nav-link' href='#top' onclick='closeNav();'>Top</a>
+            <a class='nav-link' href='#about' onclick='closeNav();'>About</a>
+            <a class='nav-link' href='#selected-works' onclick='closeNav();'>Selected Works</a>
+            <a class='nav-link' href='#portfolio' onclick='closeNav();'>Portfolio</a>
+            <a class='nav-link' href='#experience' onclick='closeNav();'>Experience</a>
+            <a class='nav-link' href='#contact' onclick='closeNav();'>Contact</a>
         </div>
 
-        <section id='barnes-hut'>
-            <canvas id='bh-canvas' class='simulation-canvas' oncontextmenu='return false;'></canvas>
-            <div id='bh-info-card' class='sw-info-card'>
-                <div>
-                    <a class='external-link' href='https://henrytermondt.github.io/barnes-hut/' title='View project in browser' aria-label='View project in browser' target='_blank'>
-                        <div>
-                            <h3>Barnes-Hut</h3>
-                            
-                            <div class='sw-underline'></div>
-                        </div>
-                        <img id='bh-link-img' src='/assets/external-link.svg'>
-                    </a>
-                </div>
-                
-                <p>
-                    Simulating galaxies colliding with 1,000,000 stars using a
-                    hybrid CPU-GPU Barnes-Hut algorithm in real time
-                    <a class='github-link' href='https://github.com/henrytermondt/barnes-hut/' title='View code on Github' aria-label='View code on Github' target='_blank'>
-                        <img src='/assets/github.svg'>
-                    </a>
-                </p>
+        <div id='loading'>
+            <div id='l-text'>Loading</div>
+            <div id='l-boxes'>
+                <div class='l-box'></div>
+                <div class='l-box'></div>
+                <div class='l-box'></div>
+                <div class='l-box'></div>
+                <div class='l-box'></div>
             </div>
-        </section>
-        <section id='schrodinger'>
-            <canvas id='s-canvas' class='simulation-canvas' oncontextmenu='return false;'></canvas>
-            <div id='s-info-card' class='sw-info-card'>
-                <div>
-                    <a class='external-link' href='https://henrytermondt.github.io/optimizing-PDEs/' title='View project in browser' aria-label='View project in browser' target='_blank'>
-                        <img id='s-link-img' src='/assets/external-link.svg'>
-                        <div>
-                            <h3>Real-Time PDE Solver</h3>
-                            
-                            <div class='sw-underline'></div>
-                        </div>
-                    </a>
-                </div>
-                <p>
-                    Designed novel algorithm for GPU accelerated numeric solvers
-                    for PDEs (e.g. Schrödinger equation) to run on school
-                    and student laptops
-                    <a class='github-link' href='https://github.com/henrytermondt/optimizing-PDEs' title='View code on Github' aria-label='View code on Github' target='_blank'>
-                        <img src='/assets/github.svg'>
-                    </a>
-                </p>
-            </div>
-        </section>
-    </section>
-
-    <div class='container'>
-        <section id='portfolio'>
-            <h2 class='header'>Portfolio</h2>
-            <div id='p-wrapper'>
-                <!-- Dynamically populated with content -->
-                <div id='p-info-card-wrapper'></div>
-                <div id='p-display-wrapper'></div>
-            </div>
-        </section>
-
-        <section id='experience'>
-            <h2 class='header'>Experience</h2>
-        </section>
-    </div>
-
-    <div id='carousel-wrapper'>
-        <!-- Dynamically populated with slides -->
-        <div id='carousel'></div>
-        <div id='e-button-wrapper'>
-            <button class='shadow' onclick='slideLeft();'>
-                <img src='/assets/left-arrow.svg'>
-            </button>
-            <button class='shadow' onclick='slideRight();'>
-                <img src='/assets/right-arrow.svg'>
-            </button>
-        </div>
-    </div>
-
-    <div class='container'>
-        <section id='contact'>
-            <div id='c-wrapper'>
-                <h2 class='header'>Get in Touch</h2>
-                <div id='c-links'>
-                    <button class='resume-button shadow' onclick='window.open("/assets/Henry Termondt Resume.pdf", "_blank");'>
-                        <span class='gradient-text'>View Resume</span>
-                    </button>
-                    <div id='github' class='link-container'>
-                        <img class='logo' src='/assets/github.svg'>
-                        <a href='https://github.com/henrytermondt' target='_blank'>Github</a>
-                    </div>
-                    <div id='linkedin' class='link-container'>
-                        <img class='logo' src='/assets/linkedin.png'>
-                        <a href='https://www.linkedin.com/in/henry-termondt-b19254301/' target='_blank'>LinkedIn</a>
-                    </div>
-                    <div id='email' class='link-container'>
-                        <img class='logo' src='/assets/email.svg'>
-                        <a href='mailto:henry.termondt@gmail.com' target='_blank'>henry.termondt@gmail.com</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Replace penrose tiling with footer -->
-            <div id='c-penrose-wrapper'>
-                <div id='c-penrose' class='shadow'></div>
-            </div>
-        </section>
-    </div>
-
-    <footer>
-        <div id='f-links'>
-            <strong>Navigation</strong>
-            <a href='#top'>Top</a>
-            <a href='#about'>About</a>
-            <a href='#selected-works'>Selected Works</a>
-            <a href='#portfolio'>Portfolio</a>
-            <a href='#experience'>Experience</a>
-            <a href='#contact'>Contact</a>
-        </div>
-        <div id='logo-wrapper'>
-            <img src='/assets/logo.svg'>
-        </div>
-    </footer>
-
-    <nav>
-        <img src='/assets/logo-black.svg'>
-        <div id='nav-links'>
-            <a class='nav-link' href='#top'>Top</a>
-            <a class='nav-link' href='#about'>About</a>
-            <a class='nav-link' href='#selected-works'>Selected Works</a>
-            <a class='nav-link' href='#portfolio'>Portfolio</a>
-            <a class='nav-link' href='#experience'>Experience</a>
-            <a class='nav-link' href='#contact'>Contact</a>
-            <img class='hamburger-menu' src='/assets/hamburger-menu.svg' onclick='openNav();'>
-            <img class='x' src='/assets/x.svg' onclick='closeNav();'>
-        </div>
-    </nav>
-    <div id='full-nav'>
-        <a class='nav-link' href='#top' onclick='closeNav();'>Top</a>
-        <a class='nav-link' href='#about' onclick='closeNav();'>About</a>
-        <a class='nav-link' href='#selected-works' onclick='closeNav();'>Selected Works</a>
-        <a class='nav-link' href='#portfolio' onclick='closeNav();'>Portfolio</a>
-        <a class='nav-link' href='#experience' onclick='closeNav();'>Experience</a>
-        <a class='nav-link' href='#contact' onclick='closeNav();'>Contact</a>
-    </div>
-
-    <div id='loading'>
-        <div id='l-text'>Loading</div>
-        <div id='l-boxes'>
-            <div class='l-box'></div>
-            <div class='l-box'></div>
-            <div class='l-box'></div>
-            <div class='l-box'></div>
-            <div class='l-box'></div>
         </div>
     </div>
     

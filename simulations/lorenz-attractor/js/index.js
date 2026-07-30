@@ -33,13 +33,6 @@ const main = async () => {
 
         const fullPositions = [];
         for (let i = 0; i < numNodes; i ++) fullPositions.push(...positions[i]);
-        
-        // for (let i = 0; i < fullPositions.length / 3; i ++) {
-        //     const index = i * 3;
-        //     fullPositions[index + 0] *= 0.5;
-        //     fullPositions[index + 2] *= 0.5;
-        // }
-
 
         // Binds position attribute
         const posBuffer = gl.createBuffer();
@@ -97,7 +90,7 @@ const main = async () => {
         gl.uniformMatrix4fv(uProjection, false, ppm);
         gl.uniformMatrix4fv(uView, false, lookAt);
 
-        let scale = window.innerWidth < 400 && !large ? window.innerWidth / 400 : 1;
+        let scale = window.innerWidth < 500 && !large ? window.innerWidth / 500 : 1;
         gl.uniform4fv(uScale, [scale, scale, 1, 1]);
 
         gl.drawArrays(gl.TRIANGLES, 0, fullPositions.length / 3);
