@@ -313,7 +313,7 @@ nav img {
 }
 #full-nav .nav-link {
     margin-left: var(--large-margin);
-    font-size: 50px;
+    font-size: clamp(0px, 11vw, 50px);
     font-weight: 200;
     text-decoration: none;
     text-decoration-thickness: 2px;
