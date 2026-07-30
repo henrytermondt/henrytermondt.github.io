@@ -70,7 +70,7 @@ body {
     display: none;
 }
 #l-boxes {
-    height: 80px;
+    height: clamp(0px, 11vw, 80px);
     width: 100%;
 
     display: none;
