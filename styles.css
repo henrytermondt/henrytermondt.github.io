@@ -395,7 +395,7 @@ h2 {
     font-size: 20px;
     font-weight: 300;
 
-    text-align: justify;
+    /* text-align: justify; */
 }
 #about p {
     font-size: 20px;
