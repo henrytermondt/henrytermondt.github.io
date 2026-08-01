@@ -275,10 +275,17 @@ nav img {
 #nav-links, #hero-nav {
     position: absolute;
     right: 10px;
+
+    text-decoration: none !important;
 }
 .nav-link {
     color: var(--dark);
     margin: 0 10px;
+
+    text-decoration: none;
+}
+.nav-link:hover {
+    text-decoration: underline;
 }
 .hamburger-menu, .x {
     cursor: pointer;
